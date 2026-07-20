@@ -1,0 +1,701 @@
+/**
+ * Eventra-inspired visual layer for the ticket-scraper /events viewer only.
+ * Scoped with body.theme-eventra — no JS or markup structure changes required.
+ */
+
+body.theme-eventra {
+  --ev-bg: #050b12;
+  --ev-bg2: #071b1f;
+  --ev-ink: #f5fbff;
+  --ev-muted: rgba(245, 251, 255, 0.68);
+  --ev-soft: rgba(245, 251, 255, 0.46);
+  --ev-line: rgba(255, 255, 255, 0.14);
+  --ev-panel: rgba(255, 255, 255, 0.08);
+  --ev-panel2: rgba(255, 255, 255, 0.12);
+  --ev-cyan: #65e4ff;
+  --ev-mint: #66f2b6;
+  --ev-gold: #f5c86a;
+  --ev-radius: 10px;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif !important;
+  color: var(--ev-ink) !important;
+  background:
+    radial-gradient(circle at 16% 8%, rgba(101, 228, 255, 0.22), transparent 28rem),
+    radial-gradient(circle at 83% 18%, rgba(102, 242, 182, 0.14), transparent 24rem),
+    radial-gradient(circle at 50% 78%, rgba(122, 167, 255, 0.14), transparent 28rem),
+    linear-gradient(135deg, var(--ev-bg), var(--ev-bg2) 48%, #090813) !important;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body.theme-eventra::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.032) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.65), transparent 78%);
+  z-index: -1;
+}
+
+body.theme-eventra::after {
+  content: "";
+  position: fixed;
+  inset: auto 0 0;
+  height: 38vh;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(5, 11, 18, 0.85), transparent);
+  z-index: -1;
+}
+
+body.theme-eventra header {
+  background: rgba(5, 11, 18, 0.72) !important;
+  border-bottom: 1px solid rgba(101, 228, 255, 0.18) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+body.theme-eventra .header-eyebrow {
+  color: var(--ev-cyan) !important;
+  letter-spacing: 0.16em !important;
+  font-weight: 800 !important;
+}
+
+body.theme-eventra header h1 {
+  font-family: Inter, system-ui, sans-serif !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.03em !important;
+  background: linear-gradient(100deg, #fff, var(--ev-cyan) 42%, var(--ev-mint) 78%, var(--ev-gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+body.theme-eventra #last-updated {
+  display: none !important;
+}
+
+body.theme-eventra .header-actions {
+  margin-left: auto !important;
+  justify-content: flex-end !important;
+}
+
+body.theme-eventra .header-auth-link {
+  border-color: rgba(101, 228, 255, 0.35) !important;
+  color: var(--ev-muted) !important;
+}
+
+body.theme-eventra .header-auth-link:hover {
+  background: rgba(101, 228, 255, 0.1) !important;
+  color: var(--ev-ink) !important;
+}
+
+body.theme-eventra .header-auth-link--gold {
+  background: linear-gradient(135deg, rgba(101, 228, 255, 0.35), rgba(102, 242, 182, 0.28)) !important;
+  color: #031015 !important;
+  border-color: transparent !important;
+}
+
+body.theme-eventra .header-auth-name {
+  color: var(--ev-ink) !important;
+}
+
+body.theme-eventra .header-auth-chip {
+  color: var(--ev-cyan) !important;
+  border-color: rgba(101, 228, 255, 0.35) !important;
+}
+
+body.theme-eventra .header-auth-out {
+  border-color: var(--ev-line) !important;
+  color: var(--ev-muted) !important;
+}
+
+body.theme-eventra .header-auth-out:hover {
+  border-color: var(--ev-cyan) !important;
+  color: var(--ev-ink) !important;
+}
+
+body.theme-eventra .controls {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-bottom: 1px solid var(--ev-line) !important;
+  backdrop-filter: blur(12px);
+}
+
+body.theme-eventra .controls-label {
+  color: var(--ev-soft) !important;
+}
+
+body.theme-eventra input,
+body.theme-eventra select {
+  background: rgba(0, 0, 0, 0.25) !important;
+  border: 1px solid rgba(101, 228, 255, 0.28) !important;
+  color: var(--ev-ink) !important;
+  border-radius: 8px !important;
+}
+
+body.theme-eventra input:focus,
+body.theme-eventra select:focus {
+  border-color: var(--ev-cyan) !important;
+  box-shadow: 0 0 0 1px rgba(101, 228, 255, 0.2);
+}
+
+body.theme-eventra input::placeholder {
+  color: var(--ev-soft) !important;
+}
+
+body.theme-eventra .stats {
+  color: var(--ev-muted) !important;
+  border-bottom: 1px solid var(--ev-line) !important;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+body.theme-eventra .stats span {
+  color: var(--ev-cyan) !important;
+}
+
+body.theme-eventra .grid-frame {
+  background: transparent !important;
+}
+
+body.theme-eventra .hero-banner {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)) !important;
+  border-bottom: 1px solid var(--ev-line) !important;
+}
+
+body.theme-eventra .hero-banner-watermark {
+  color: rgba(101, 228, 255, 0.06) !important;
+}
+
+body.theme-eventra .hero-banner-eyebrow {
+  color: var(--ev-cyan) !important;
+}
+
+body.theme-eventra .hero-banner-title {
+  font-family: Inter, system-ui, sans-serif !important;
+  color: var(--ev-ink) !important;
+}
+
+body.theme-eventra .hero-banner-title em {
+  font-style: normal !important;
+  background: linear-gradient(100deg, var(--ev-cyan), var(--ev-mint));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+body.theme-eventra .hero-banner-sub {
+  color: var(--ev-muted) !important;
+}
+
+body.theme-eventra .hero-stat-box {
+  border-color: var(--ev-line) !important;
+}
+
+body.theme-eventra .hero-stat-num {
+  color: var(--ev-ink) !important;
+}
+
+body.theme-eventra .hero-stat-label {
+  color: var(--ev-soft) !important;
+}
+
+body.theme-eventra .ticker-wrap {
+  background: rgba(0, 0, 0, 0.22) !important;
+  border-bottom: 1px solid var(--ev-line) !important;
+}
+
+body.theme-eventra .ticker-item {
+  color: var(--ev-muted) !important;
+}
+
+body.theme-eventra .ticker-sep {
+  color: var(--ev-soft) !important;
+}
+
+body.theme-eventra .source-badge {
+  background: var(--ev-panel) !important;
+  border: 1px solid var(--ev-line) !important;
+  color: var(--ev-muted) !important;
+}
+
+body.theme-eventra .source-badge-num {
+  color: var(--ev-cyan) !important;
+}
+
+body.theme-eventra .card {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid rgba(101, 228, 255, 0.22) !important;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.04) !important;
+  backdrop-filter: blur(14px);
+}
+
+body.theme-eventra .card:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 16px 56px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(101, 228, 255, 0.18) !important;
+}
+
+body.theme-eventra .card::after {
+  background: linear-gradient(90deg, var(--ev-cyan), var(--ev-mint)) !important;
+}
+
+body.theme-eventra .card-title {
+  font-family: Inter, system-ui, sans-serif !important;
+  font-weight: 700 !important;
+  color: var(--ev-ink) !important;
+}
+
+body.theme-eventra .card-meta {
+  color: var(--ev-muted) !important;
+}
+
+body.theme-eventra .card-summary {
+  color: var(--ev-soft) !important;
+}
+
+body.theme-eventra .badge-free {
+  background: linear-gradient(135deg, rgba(101, 228, 255, 0.35), rgba(102, 242, 182, 0.25)) !important;
+  color: #031015 !important;
+  border: none !important;
+}
+
+body.theme-eventra .badge-paid {
+  color: var(--ev-cyan) !important;
+  border-color: rgba(101, 228, 255, 0.35) !important;
+}
+
+body.theme-eventra .badge-category {
+  color: var(--ev-muted) !important;
+  border-color: var(--ev-line) !important;
+}
+
+body.theme-eventra .card-link {
+  background: linear-gradient(135deg, var(--ev-cyan), var(--ev-mint)) !important;
+  color: #031015 !important;
+  font-weight: 800 !important;
+  border-radius: 8px !important;
+}
+
+body.theme-eventra .card-link:hover {
+  filter: brightness(1.08);
+}
+
+body.theme-eventra .no-img {
+  background: linear-gradient(135deg, rgba(101, 228, 255, 0.2), rgba(102, 242, 182, 0.12)) !important;
+  color: rgba(245, 251, 255, 0.45) !important;
+}
+
+body.theme-eventra .empty,
+body.theme-eventra .loading {
+  background: transparent !important;
+  color: var(--ev-soft) !important;
+}
+
+body.theme-eventra .ai-fab {
+  background: rgba(5, 11, 18, 0.85) !important;
+  border: 1px solid rgba(101, 228, 255, 0.45) !important;
+  color: var(--ev-cyan) !important;
+  box-shadow: 0 0 28px rgba(101, 228, 255, 0.2) !important;
+}
+
+body.theme-eventra .ai-fab:hover {
+  background: rgba(101, 228, 255, 0.15) !important;
+  box-shadow: 0 12px 40px rgba(101, 228, 255, 0.28) !important;
+}
+
+body.theme-eventra .ai-overlay-backdrop {
+  background: rgba(5, 11, 18, 0.55) !important;
+  backdrop-filter: blur(14px) !important;
+}
+
+body.theme-eventra .ai-events-zone.has-events {
+  background: rgba(0, 0, 0, 0.12) !important;
+}
+
+body.theme-eventra .ai-events-zone-head h3 {
+  font-family: Inter, system-ui, sans-serif !important;
+  color: var(--ev-ink) !important;
+}
+
+body.theme-eventra .ai-events-zone-head-meta {
+  color: var(--ev-muted) !important;
+}
+
+body.theme-eventra .ai-events-zone-clear {
+  border-color: var(--ev-line) !important;
+  color: var(--ev-muted) !important;
+}
+
+body.theme-eventra .ai-events-zone-clear:hover {
+  border-color: var(--ev-cyan) !important;
+  color: var(--ev-cyan) !important;
+}
+
+body.theme-eventra .chat-events-label {
+  color: var(--ev-soft) !important;
+}
+
+body.theme-eventra .chat-events-grid .card {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(101, 228, 255, 0.2) !important;
+}
+
+body.theme-eventra .chat-events-grid .card:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+
+body.theme-eventra .chat-events-grid .card-title {
+  color: var(--ev-ink) !important;
+}
+
+body.theme-eventra .ai-drawer {
+  background: rgba(7, 20, 25, 0.92) !important;
+  border: 1px solid rgba(101, 228, 255, 0.2) !important;
+  box-shadow: 0 24px 90px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(20px);
+}
+
+body.theme-eventra .ai-drawer-head {
+  background: linear-gradient(135deg, rgba(101, 228, 255, 0.25), rgba(102, 242, 182, 0.12)) !important;
+  border-bottom: 1px solid rgba(101, 228, 255, 0.25) !important;
+}
+
+body.theme-eventra .ai-drawer-head h2 {
+  font-family: Inter, system-ui, sans-serif !important;
+  font-weight: 800 !important;
+  color: #031015 !important;
+}
+
+body.theme-eventra .ai-history-btn {
+  border-color: rgba(3, 16, 21, 0.25) !important;
+  color: rgba(3, 16, 21, 0.65) !important;
+}
+
+body.theme-eventra .ai-history-btn:hover {
+  border-color: #031015 !important;
+  color: #031015 !important;
+}
+
+body.theme-eventra .ai-drawer-close {
+  border-color: rgba(3, 16, 21, 0.25) !important;
+  color: rgba(3, 16, 21, 0.55) !important;
+}
+
+body.theme-eventra .ai-drawer-sub {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-bottom-color: var(--ev-line) !important;
+  color: var(--ev-muted) !important;
+}
+
+body.theme-eventra .ai-history-panel {
+  background: rgba(5, 11, 18, 0.98) !important;
+  border-color: rgba(101, 228, 255, 0.22) !important;
+}
+
+body.theme-eventra .ai-history-head {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+body.theme-eventra .ai-history-head h4 {
+  color: var(--ev-cyan) !important;
+}
+
+body.theme-eventra .ai-history-list {
+  background: rgba(0, 0, 0, 0.2) !important;
+}
+
+body.theme-eventra .ai-conv {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: var(--ev-line) !important;
+}
+
+body.theme-eventra .ai-conv-summary {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: var(--ev-ink) !important;
+}
+
+body.theme-eventra .ai-conv-summary:hover {
+  background: rgba(101, 228, 255, 0.1) !important;
+}
+
+body.theme-eventra .ai-conv-title {
+  color: var(--ev-ink) !important;
+}
+
+body.theme-eventra .ai-conv-meta {
+  color: var(--ev-muted) !important;
+}
+
+body.theme-eventra .ai-conv-actions {
+  background: rgba(0, 0, 0, 0.15) !important;
+}
+
+body.theme-eventra .ai-conv-events-btn {
+  color: var(--ev-cyan) !important;
+  border-color: rgba(101, 228, 255, 0.35) !important;
+}
+
+body.theme-eventra #chat-log {
+  background: rgba(0, 0, 0, 0.28) !important;
+  border: 1px solid rgba(101, 228, 255, 0.22) !important;
+  color: var(--ev-ink) !important;
+}
+
+body.theme-eventra .msg-user {
+  color: var(--ev-cyan) !important;
+}
+
+body.theme-eventra .msg-bot {
+  color: var(--ev-muted) !important;
+}
+
+body.theme-eventra .ai-drawer-input {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-top-color: var(--ev-line) !important;
+}
+
+body.theme-eventra #chat-message {
+  background: rgba(0, 0, 0, 0.25) !important;
+  border-color: rgba(101, 228, 255, 0.28) !important;
+  color: var(--ev-ink) !important;
+}
+
+body.theme-eventra #chat-message:focus {
+  border-color: var(--ev-cyan) !important;
+}
+
+body.theme-eventra #chat-send {
+  background: linear-gradient(135deg, var(--ev-cyan), var(--ev-mint)) !important;
+  color: #031015 !important;
+}
+
+body.theme-eventra #chat-send:hover {
+  filter: brightness(1.06);
+}
+
+body.theme-eventra #chat-err {
+  color: #ff78a6 !important;
+}
+
+body.theme-eventra .itin-modal-backdrop {
+  background: rgba(5, 11, 18, 0.62) !important;
+}
+
+body.theme-eventra .itin-modal-panel {
+  background: rgba(7, 20, 25, 0.95) !important;
+  border: 1px solid rgba(101, 228, 255, 0.22) !important;
+  box-shadow: 0 36px 100px rgba(0, 0, 0, 0.55) !important;
+}
+
+body.theme-eventra #itin-modal.itin-modal--trip-view .itin-modal-scroll {
+  background: linear-gradient(180deg, rgba(5, 11, 18, 0.95), rgba(7, 27, 31, 0.92)) !important;
+}
+
+body.theme-eventra .itin-trip-surface {
+  --ts-bg: #0a0e0b;
+  --ts-card: #131813;
+  --ts-line: rgba(200, 169, 110, 0.15);
+  --ts-gold: #d4af37;
+  --ts-gold-dim: #b8956f;
+  --ts-ink: #f5f1eb;
+  --ts-muted: #a89968;
+  border-color: rgba(200, 169, 110, 0.22) !important;
+}
+
+body.theme-eventra .itin-trip-hero {
+  background: linear-gradient(165deg, rgba(101, 228, 255, 0.12), rgba(5, 11, 18, 0.9)) !important;
+}
+
+body.theme-eventra .itin-trip-eyebrow {
+  color: var(--ev-cyan) !important;
+}
+
+body.theme-eventra .itin-trip-title {
+  font-family: Inter, system-ui, sans-serif !important;
+}
+
+body.theme-eventra .viewer-fab-stack > button:not(.ai-fab) {
+  border-radius: 999px !important;
+  border: 1px solid rgba(101, 228, 255, 0.4) !important;
+  background: rgba(5, 11, 18, 0.88) !important;
+  color: var(--ev-cyan) !important;
+  box-shadow: 0 0 24px rgba(101, 228, 255, 0.15) !important;
+}
+
+body.theme-eventra .itin-modal-header {
+  background: linear-gradient(180deg, rgba(5, 11, 18, 0.98), rgba(7, 27, 31, 0.92)) !important;
+  border-bottom: 1px solid rgba(101, 228, 255, 0.22) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35) !important;
+}
+
+body.theme-eventra .itin-modal-header h1 {
+  font-family: Inter, system-ui, sans-serif !important;
+  font-weight: 700 !important;
+  color: var(--ev-ink) !important;
+}
+
+body.theme-eventra .itin-header-chip {
+  background: linear-gradient(135deg, var(--ev-cyan), var(--ev-mint)) !important;
+  color: #031015 !important;
+  box-shadow: 0 6px 20px rgba(101, 228, 255, 0.25) !important;
+}
+
+body.theme-eventra .itin-header-back {
+  border-color: rgba(101, 228, 255, 0.35) !important;
+  color: var(--ev-ink) !important;
+}
+
+body.theme-eventra .itin-modal-scroll {
+  background: rgba(5, 11, 18, 0.35) !important;
+}
+
+body.theme-eventra .itin-icon-btn {
+  border-color: rgba(101, 228, 255, 0.28) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: var(--ev-ink) !important;
+}
+
+/* Hero AI command (matches Eventra landing hero placement / chrome) */
+body.theme-eventra .hero-banner .ai-command {
+  margin-top: 34px;
+  border: 1px solid rgba(101, 228, 255, 0.34);
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.055));
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04), 0 0 42px rgba(101, 228, 255, 0.12);
+  padding: 10px;
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  max-width: 100%;
+}
+
+body.theme-eventra .hero-banner .ai-command-head .command-question {
+  padding: 7px 8px 11px;
+  color: rgba(245, 251, 255, 0.95);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+body.theme-eventra .hero-banner .ai-command-inner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: stretch;
+}
+
+body.theme-eventra .hero-banner .ai-command input#hero-ai-input {
+  min-height: 62px;
+  width: 100%;
+  border: 0 !important;
+  outline: none;
+  background: rgba(6, 18, 14, 0.35) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+  color: #f5fbff !important;
+  padding: 0 16px;
+  font-size: 17px;
+  text-overflow: ellipsis;
+  border-radius: 8px !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+body.theme-eventra .hero-banner .ai-command input#hero-ai-input::placeholder {
+  color: rgba(245, 251, 255, 0.62) !important;
+}
+
+body.theme-eventra .hero-banner .ai-command input#hero-ai-input:focus-visible {
+  outline: 2px solid rgba(101, 228, 255, 0.75);
+  outline-offset: 2px;
+}
+
+body.theme-eventra .hero-banner .ai-command .primary {
+  border-radius: var(--ev-radius);
+  min-height: 46px;
+  min-width: 0;
+  border: 0;
+  padding: 0 16px;
+  font-weight: 900;
+  font-size: 14px;
+  white-space: nowrap;
+  display: inline-grid;
+  place-items: center;
+  color: #031015 !important;
+  background: linear-gradient(135deg, var(--ev-cyan), var(--ev-mint)) !important;
+  box-shadow: 0 12px 38px rgba(101, 228, 255, 0.24);
+  cursor: pointer;
+}
+
+body.theme-eventra .hero-banner .ai-command .primary:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+
+body.theme-eventra .hero-banner .ai-command .primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+body.theme-eventra .hero-banner .prompt-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+body.theme-eventra .hero-banner .prompt-chips button {
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--ev-muted);
+  border-radius: 999px;
+  padding: 8px 11px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+body.theme-eventra .hero-banner .prompt-chips button:hover {
+  border-color: rgba(101, 228, 255, 0.35);
+  color: var(--ev-ink);
+}
+
+body.theme-eventra .hero-banner .hero-ai-status {
+  margin: 12px 4px 2px;
+  min-height: 18px;
+  color: rgba(245, 251, 255, 0.9);
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
+}
+
+body.theme-eventra .hero-banner .hero-ai-status.thinking {
+  color: var(--ev-cyan);
+}
+
+body.theme-eventra .hero-banner .hero-ai-status.success {
+  color: var(--ev-mint);
+}
+
+body.theme-eventra .hero-banner .hero-ai-status.warning {
+  color: #f5c86a;
+}
+
+body.theme-eventra .hero-banner .hero-ai-conversation {
+  margin-top: 10px;
+}
+
+body.theme-eventra .hero-banner .hero-ai-conversation .hero-chat-turn {
+  color: #f5fbff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 720px) {
+  body.theme-eventra .hero-banner .ai-command-inner {
+    grid-template-columns: 1fr;
+  }
+
+  body.theme-eventra .hero-banner .ai-command .primary {
+    min-height: 48px;
+    width: 100%;
+  }
+}

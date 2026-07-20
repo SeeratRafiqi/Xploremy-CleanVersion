@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quick taste quiz · Event Explorer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg-2: #141414;
+      --surface: rgba(22, 22, 22, 0.88);
+      --surface-2: rgba(30, 30, 30, 0.65);
+      --text: #e5e2e1;
+      --muted: #a3a3a3;
+      --warm: #737373;
+      --accent: #00d4aa;
+      --accent-soft: #76d6d5;
+      --accent-deep: #00a884;
+      --gold: #e9c349;
+      --border: rgba(255, 255, 255, 0.1);
+      --font-display: "Montserrat", system-ui, sans-serif;
+      --font-body: "Inter", system-ui, sans-serif;
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; }
+    body {
+      min-height: 100vh;
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      padding: 28px 16px 40px;
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+    }
+    .ob-ombre {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 70% 55% at 50% -8%, rgba(0, 212, 170, 0.18), transparent 58%),
+        radial-gradient(ellipse 50% 40% at 12% 85%, rgba(118, 214, 213, 0.1), transparent 52%),
+        radial-gradient(ellipse 45% 35% at 88% 72%, rgba(233, 195, 73, 0.07), transparent 48%),
+        linear-gradient(180deg, #0d1211 0%, var(--bg) 38%, #080808 100%);
+    }
+    .ob-wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    .ob-brand {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+    .ob-brand a { color: inherit; text-decoration: none; }
+    .ob-eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-soft);
+      font-weight: 600;
+    }
+    .ob-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-top: 6px;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+    .ob-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px 22px 26px;
+      box-shadow:
+        0 28px 70px rgba(0, 0, 0, 0.45),
+        0 0 32px rgba(0, 212, 170, 0.06);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      min-height: 320px;
+    }
+    .ob-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .ob-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      transition: transform 0.2s, background 0.2s;
+    }
+    .ob-dot.is-on {
+      background: var(--accent-soft);
+      box-shadow: 0 0 10px rgba(118, 214, 213, 0.45);
+      transform: scale(1.25);
+    }
+    .ob-step[hidden] { display: none !important; }
+    .ob-q {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .ob-sub {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 20px;
+    }
+    .ob-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 440px) {
+      .ob-grid { grid-template-columns: 1fr; }
+    }
+    .ob-tile {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .ob-tile:hover {
+      border-color: rgba(118, 214, 213, 0.35);
+      background: rgba(30, 30, 30, 0.85);
+      transform: translateY(-1px);
+    }
+    .ob-tile.is-selected {
+      border-color: rgba(118, 214, 213, 0.55);
+      background: rgba(0, 212, 170, 0.12);
+      box-shadow: 0 0 0 2px rgba(118, 214, 213, 0.15);
+    }
+    .ob-tile .ob-k {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-soft);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .ob-tile .ob-v { font-weight: 600; }
+    .ob-tile .ob-s {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .ob-other-row {
+      margin-top: 14px;
+      display: none;
+    }
+    .ob-other-row.is-open { display: block; }
+    .ob-other-row label {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-soft);
+      font-weight: 600;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .ob-other-row input {
+      width: 100%;
+      max-width: 160px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(32, 31, 31, 0.9);
+      color: var(--text);
+      font-family: inherit;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .ob-other-row input:focus {
+      border-color: rgba(118, 214, 213, 0.45);
+      box-shadow: 0 0 0 2px rgba(118, 214, 213, 0.12);
+    }
+    .ob-chip-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .ob-chip {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: #bdc9c8;
+      font-family: inherit;
+      font-size: 0.84rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, color 0.2s;
+    }
+    .ob-chip:hover {
+      border-color: rgba(118, 214, 213, 0.35);
+      color: var(--accent-soft);
+    }
+    .ob-chip.is-on {
+      border-color: rgba(118, 214, 213, 0.5);
+      background: rgba(118, 214, 213, 0.15);
+      color: var(--accent-soft);
+    }
+    .ob-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 22px;
+    }
+    .ob-btn {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 12px 20px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+    .ob-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    .ob-btn--ghost:hover:not(:disabled) {
+      border-color: rgba(118, 214, 213, 0.35);
+      color: var(--accent-soft);
+      background: rgba(118, 214, 213, 0.08);
+    }
+    .ob-btn--gold {
+      border: none;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
+      color: #003737;
+      margin-left: auto;
+      box-shadow: 0 8px 24px rgba(0, 212, 170, 0.22);
+    }
+    .ob-btn--gold:hover:not(:disabled) {
+      filter: brightness(1.06);
+      box-shadow: 0 10px 28px rgba(0, 212, 170, 0.3);
+    }
+    .ob-msg {
+      margin-top: 14px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      display: none;
+    }
+    .ob-msg.is-err {
+      display: block;
+      background: rgba(180, 60, 60, 0.15);
+      border: 1px solid rgba(255, 120, 120, 0.3);
+      color: #ffb8b8;
+    }
+    .ob-yesno {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .ob-yesno .ob-tile { text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="ob-ombre" aria-hidden="true"></div>
+  <div class="ob-wrap">
+    <div class="ob-brand">
+      <a href="/events">
+        <div class="ob-eyebrow">Event Explorer</div>
+        <div class="ob-title">Your vibe, in a few taps</div>
+      </a>
+    </div>
+
+    <div class="ob-card">
+      <div class="ob-dots" id="ob-dots" aria-hidden="true"></div>
+
+      <section class="ob-step" data-step="0">
+        <p class="ob-q">Before we drop you into the listings…</p>
+        <p class="ob-sub">
+          A short quiz — like those “pick your favourites” screens — so we know your home airport for flights and what kinds of events to line up for you later. No wrong answers.
+        </p>
+      </section>
+
+      <section class="ob-step" data-step="1" hidden>
+        <p class="ob-q">Where do you usually take off from?</p>
+        <p class="ob-sub">Tap one hub. We’ll use it as the default “From” airport.</p>
+        <div class="ob-grid" id="ob-airports"></div>
+        <div class="ob-other-row" id="ob-other-wrap">
+          <label for="ob-iata-other">Other — type 3-letter IATA</label>
+          <input id="ob-iata-other" maxlength="3" placeholder="e.g. LGK" autocomplete="off" />
+        </div>
+      </section>
+
+      <section class="ob-step" data-step="2" hidden>
+        <p class="ob-q">What event categories do you enjoy?</p>
+        <p class="ob-sub">Fan DNA — pick as many as you like (at least one).</p>
+        <div class="ob-chip-grid" id="ob-fdna-categories"></div>
+      </section>
+
+      <section class="ob-step" data-step="3" hidden>
+        <p class="ob-q">What vibe do you prefer?</p>
+        <p class="ob-sub">Tap all that fit you.</p>
+        <div class="ob-chip-grid" id="ob-fdna-vibes"></div>
+      </section>
+
+      <section class="ob-step" data-step="4" hidden>
+        <p class="ob-q">What kind of crowd do you prefer?</p>
+        <p class="ob-sub">Pick the vibe that feels right to you</p>
+        <div class="ob-grid" id="ob-fdna-size"></div>
+      </section>
+
+      <section class="ob-step" data-step="5" hidden>
+        <p class="ob-q">How far will you travel for an event?</p>
+        <p class="ob-sub">One pick.</p>
+        <div class="ob-grid" id="ob-fdna-travel"></div>
+      </section>
+
+      <section class="ob-step" data-step="6" hidden>
+        <p class="ob-q">Preferred time?</p>
+        <p class="ob-sub">When do you usually go out? Pick at least one.</p>
+        <div class="ob-chip-grid" id="ob-fdna-time"></div>
+      </section>
+
+      <section class="ob-step" data-step="7" hidden>
+        <p class="ob-q">Budget range for events?</p>
+        <p class="ob-sub">Fan DNA ticket budget — one pick.</p>
+        <div class="ob-grid" id="ob-fdna-budget"></div>
+      </section>
+
+      <section class="ob-step" data-step="8" hidden>
+        <p class="ob-q">One last thing — how do you identify?</p>
+        <p class="ob-sub">Completely optional — skip anytime</p>
+        <div class="ob-grid" id="ob-gender"></div>
+        <button type="button" class="ob-btn ob-btn--ghost" id="ob-gender-skip" style="width:100%;margin-top:14px">Skip</button>
+      </section>
+
+      <section class="ob-step" data-step="9" hidden>
+        <p class="ob-q">What best describes you?</p>
+        <p class="ob-sub">Helps us show who usually attends each event.</p>
+        <div class="ob-grid" id="ob-profession"></div>
+      </section>
+
+      <section class="ob-step" data-step="10" hidden>
+        <p class="ob-q">Your age group?</p>
+        <p class="ob-sub">Helps us estimate the crowd for each event.</p>
+        <div class="ob-grid" id="ob-age"></div>
+      </section>
+
+      <section class="ob-step" data-step="11" hidden>
+        <p class="ob-q">Almost there</p>
+        <p class="ob-sub">Want a heads-up when we find picks that match this taste?</p>
+        <div class="ob-yesno" id="ob-marketing"></div>
+      </section>
+
+      <div class="ob-nav">
+        <button type="button" class="ob-btn ob-btn--ghost" id="ob-back" hidden>Back</button>
+        <button type="button" class="ob-btn ob-btn--gold" id="ob-next">Let’s play</button>
+      </div>
+      <div id="ob-msg" class="ob-msg" role="alert"></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var TOTAL = 12;
+      var step = 0;
+      var fanOnly = /(?:\?|&)fanDna=1/.test(location.search || '');
+      var existingProfile = null;
+      var ans = {
+        homeIata: '',
+        locationCity: '',
+        locationCountry: 'Malaysia',
+        genres: [],
+        fanDna: {
+          categories: [],
+          vibes: [],
+          event_size: '',
+          travel_distance: '',
+          preferred_time: [],
+          budget: '',
+        },
+        marketingOptIn: true,
+        language: '',
+        notes: '',
+        gender: null,
+        profession: null,
+        ageGroup: null,
+      };
+      var otherMode = false;
+
+      var AIRPORTS = [
+        { iata: 'KUL', city: 'KL & Klang Valley', country: 'Malaysia' },
+        { iata: 'PEN', city: 'Penang & north', country: 'Malaysia' },
+        { iata: 'JHB', city: 'Johor & south', country: 'Malaysia' },
+        { iata: 'BKI', city: 'Kota Kinabalu / east', country: 'Malaysia' },
+        { iata: 'KCH', city: 'Kuching / Sarawak', country: 'Malaysia' },
+        { iata: 'SIN', city: 'Singapore', country: 'Singapore' },
+        { iata: 'OTHER', city: 'Somewhere else', country: '' },
+      ];
+
+      var FDNA_CATEGORIES = [
+        { id: 'music', label: 'Music' },
+        { id: 'sports', label: 'Sports' },
+        { id: 'food_drink', label: 'Food & Drink' },
+        { id: 'arts_culture', label: 'Arts & Culture' },
+        { id: 'technology', label: 'Technology' },
+        { id: 'nature_outdoors', label: 'Nature & Outdoors' },
+        { id: 'comedy', label: 'Comedy' },
+        { id: 'networking', label: 'Networking' },
+      ];
+      var FDNA_VIBES = [
+        { id: 'chill_relaxed', label: 'Chill & Relaxed' },
+        { id: 'high_energy', label: 'High Energy' },
+        { id: 'social_meetup', label: 'Social & Meetup' },
+        { id: 'educational', label: 'Educational' },
+        { id: 'family_friendly', label: 'Family Friendly' },
+      ];
+      var FDNA_SIZES = [
+        { id: 'intimate', t: 'Just Us', s: 'Small & cosy gatherings' },
+        { id: 'medium', t: 'Squad Vibes', s: '50–200 people' },
+        { id: 'large', t: 'Big Crowd', s: 'Concerts & big events' },
+        { id: 'massive', t: 'Festival Mode', s: '1000+ massive events' },
+      ];
+      var GENDER_OPTIONS = [
+        { id: 'Male', t: 'Male' },
+        { id: 'Female', t: 'Female' },
+        { id: 'Non-binary', t: 'Non-binary' },
+        { id: 'Prefer not to say', t: 'Prefer not to say' },
+      ];
+      var PROFESSION_OPTIONS = [
+        { id: 'working', t: 'Working professional', s: 'Employed or self-employed' },
+        { id: 'student', t: 'Student', s: 'School, college or university' },
+        { id: 'other', t: 'Other', s: 'Prefer not to say' },
+      ];
+      var AGE_OPTIONS = [
+        { id: 'under_18', t: 'Under 18', s: '' },
+        { id: '18_24', t: '18–24', s: '' },
+        { id: '25_34', t: '25–34', s: '' },
+        { id: '35_44', t: '35–44', s: '' },
+        { id: '45_plus', t: '45+', s: '' },
+      ];
+      var FDNA_TRAVEL = [
+        { id: '5km', t: '5 km', s: 'Very local' },
+        { id: '10km', t: '10 km', s: 'Neighbourhood' },
+        { id: '25km', t: '25 km', s: 'Metro area' },
+        { id: '50km', t: '50 km', s: 'Willing to drive' },
+        { id: 'any', t: 'Any distance', s: 'Road trip ready' },
+      ];
+      var FDNA_TIMES = [
+        { id: 'morning', label: 'Morning' },
+        { id: 'afternoon', label: 'Afternoon' },
+        { id: 'evening', label: 'Evening' },
+        { id: 'late_night', label: 'Late Night' },
+      ];
+      var FDNA_BUDGET = [
+        { id: 'free', t: 'Free', s: 'RM0' },
+        { id: 'under_50', t: 'Under RM50', s: 'Light spend' },
+        { id: '50_150', t: 'RM50–150', s: 'Mid range' },
+        { id: '150_plus', t: 'RM150+', s: 'Premium' },
+      ];
+
+      var dots = document.getElementById('ob-dots');
+      for (var d = 0; d < TOTAL; d++) {
+        var dot = document.createElement('span');
+        dot.className = 'ob-dot' + (d === 0 ? ' is-on' : '');
+        dots.appendChild(dot);
+      }
+
+      function showMsg(t, err) {
+        var m = document.getElementById('ob-msg');
+        m.textContent = t || '';
+        m.className = 'ob-msg' + (err ? ' is-err' : '');
+        if (!t) m.className = 'ob-msg';
+      }
+
+      function renderAirports() {
+        var host = document.getElementById('ob-airports');
+        host.innerHTML = '';
+        AIRPORTS.forEach(function (a) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'ob-tile';
+          b.setAttribute('data-iata', a.iata);
+          b.innerHTML =
+            '<span class="ob-k">' +
+            (a.iata === 'OTHER' ? 'Custom' : a.iata) +
+            '</span><span class="ob-v">' +
+            a.city +
+            '</span><span class="ob-s">' +
+            (a.country || 'enter code') +
+            '</span>';
+          b.addEventListener('click', function () {
+            host.querySelectorAll('.ob-tile').forEach(function (x) {
+              x.classList.remove('is-selected');
+            });
+            b.classList.add('is-selected');
+            otherMode = a.iata === 'OTHER';
+            document.getElementById('ob-other-wrap').classList.toggle('is-open', otherMode);
+            if (!otherMode) {
+              ans.homeIata = a.iata;
+              ans.locationCity = a.city;
+              ans.locationCountry = a.country || 'Malaysia';
+            } else {
+              ans.homeIata = '';
+              ans.locationCity = '';
+              ans.locationCountry = '';
+            }
+          });
+          host.appendChild(b);
+        });
+      }
+
+      function renderChips(hostId, items, arrKey) {
+        var host = document.getElementById(hostId);
+        host.innerHTML = '';
+        items.forEach(function (it) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'ob-chip';
+          b.textContent = it.label;
+          b.setAttribute('data-id', it.id);
+          b.addEventListener('click', function () {
+            var list = ans[arrKey];
+            var i = list.indexOf(it.id);
+            if (i >= 0) {
+              list.splice(i, 1);
+              b.classList.remove('is-on');
+            } else {
+              list.push(it.id);
+              b.classList.add('is-on');
+            }
+          });
+          host.appendChild(b);
+        });
+      }
+
+      function renderFanDnaChips(hostId, items, listKey) {
+        var host = document.getElementById(hostId);
+        host.innerHTML = '';
+        items.forEach(function (it) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'ob-chip';
+          b.textContent = it.label;
+          b.setAttribute('data-id', it.id);
+          b.addEventListener('click', function () {
+            var list = ans.fanDna[listKey];
+            var i = list.indexOf(it.id);
+            if (i >= 0) {
+              list.splice(i, 1);
+              b.classList.remove('is-on');
+            } else {
+              list.push(it.id);
+              b.classList.add('is-on');
+            }
+          });
+          host.appendChild(b);
+        });
+      }
+
+      function renderFanDnaSingle(hostId, opts, key) {
+        var host = document.getElementById(hostId);
+        host.innerHTML = '';
+        opts.forEach(function (o) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'ob-tile' + (ans.fanDna[key] === o.id ? ' is-selected' : '');
+          b.innerHTML = '<span class="ob-v">' + o.t + '</span><span class="ob-s">' + o.s + '</span>';
+          b.addEventListener('click', function () {
+            ans.fanDna[key] = o.id;
+            host.querySelectorAll('.ob-tile').forEach(function (x) {
+              x.classList.remove('is-selected');
+            });
+            b.classList.add('is-selected');
+          });
+          host.appendChild(b);
+        });
+      }
+
+      function renderGender() {
+        var host = document.getElementById('ob-gender');
+        host.innerHTML = '';
+        GENDER_OPTIONS.forEach(function (o) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'ob-tile' + (ans.gender === o.id ? ' is-selected' : '');
+          b.innerHTML = '<span class="ob-v">' + o.t + '</span>';
+          b.addEventListener('click', function () {
+            ans.gender = o.id;
+            host.querySelectorAll('.ob-tile').forEach(function (x) {
+              x.classList.remove('is-selected');
+            });
+            b.classList.add('is-selected');
+          });
+          host.appendChild(b);
+        });
+      }
+
+      function renderProfession() {
+        var host = document.getElementById('ob-profession');
+        host.innerHTML = '';
+        PROFESSION_OPTIONS.forEach(function (o) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'ob-tile' + (ans.profession === o.id ? ' is-selected' : '');
+          b.innerHTML =
+            '<span class="ob-v">' + o.t + '</span>' + (o.s ? '<span class="ob-s">' + o.s + '</span>' : '');
+          b.addEventListener('click', function () {
+            ans.profession = o.id;
+            host.querySelectorAll('.ob-tile').forEach(function (x) {
+              x.classList.remove('is-selected');
+            });
+            b.classList.add('is-selected');
+          });
+          host.appendChild(b);
+        });
+      }
+
+      function renderAge() {
+        var host = document.getElementById('ob-age');
+        host.innerHTML = '';
+        AGE_OPTIONS.forEach(function (o) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'ob-tile' + (ans.ageGroup === o.id ? ' is-selected' : '');
+          b.innerHTML =
+            '<span class="ob-v">' + o.t + '</span>' + (o.s ? '<span class="ob-s">' + o.s + '</span>' : '');
+          b.addEventListener('click', function () {
+            ans.ageGroup = o.id;
+            host.querySelectorAll('.ob-tile').forEach(function (x) {
+              x.classList.remove('is-selected');
+            });
+            b.classList.add('is-selected');
+          });
+          host.appendChild(b);
+        });
+      }
+
+      function renderMarketing() {
+        var host = document.getElementById('ob-marketing');
+        host.innerHTML = '';
+        function mk(yes) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'ob-tile' + (ans.marketingOptIn === yes ? ' is-selected' : '');
+          b.textContent = yes ? 'Yes, surprise me' : 'No thanks';
+          b.addEventListener('click', function () {
+            ans.marketingOptIn = yes;
+            host.querySelectorAll('.ob-tile').forEach(function (x) {
+              x.classList.remove('is-selected');
+            });
+            b.classList.add('is-selected');
+          });
+          return b;
+        }
+        host.appendChild(mk(true));
+        host.appendChild(mk(false));
+        if (!host.querySelector('.is-selected')) host.firstChild.classList.add('is-selected');
+      }
+
+      function syncDots() {
+        var ds = dots.querySelectorAll('.ob-dot');
+        ds.forEach(function (d, i) {
+          d.classList.toggle('is-on', i === step);
+        });
+      }
+
+      function showStep() {
+        document.querySelectorAll('.ob-step').forEach(function (el) {
+          var s = parseInt(el.getAttribute('data-step'), 10);
+          el.hidden = s !== step;
+        });
+        syncDots();
+        var back = document.getElementById('ob-back');
+        var next = document.getElementById('ob-next');
+        back.hidden = step === 0;
+        if (step === 0) next.textContent = 'Let’s play';
+        else if (step === TOTAL - 1) next.textContent = 'Finish & go to events';
+        else next.textContent = 'Next';
+        showMsg('');
+      }
+
+      var FAN_DNA_TO_GENRE = {
+        music: 'music',
+        sports: 'sports',
+        food_drink: 'food',
+        arts_culture: 'arts',
+        technology: 'tech',
+        nature_outdoors: 'wellness',
+        comedy: 'comedy',
+        networking: 'nightlife',
+      };
+
+      function genresFromFanDnaCategories(cats) {
+        var out = [];
+        (cats || []).forEach(function (id) {
+          var g = FAN_DNA_TO_GENRE[id];
+          if (g && out.indexOf(g) < 0) out.push(g);
+        });
+        return out;
+      }
+
+      function fanDnaSavePayload() {
+        return {
+          categories: ans.fanDna.categories.slice(),
+          vibes: ans.fanDna.vibes.slice(),
+          preferred_time: ans.fanDna.preferred_time.slice(),
+          event_size: ans.fanDna.event_size,
+          travel_distance: ans.fanDna.travel_distance,
+          budget: ans.fanDna.budget,
+          home_iata: ans.homeIata,
+          gender: ans.gender,
+          profession: ans.profession,
+          age_group: ans.ageGroup,
+        };
+      }
+
+      function profileSavePayload() {
+        var payload = {
+          homeIata: ans.homeIata,
+          locationCity: ans.locationCity,
+          locationCountry: ans.locationCountry,
+          marketingOptIn: ans.marketingOptIn,
+        };
+        if (ans.language) payload.language = ans.language;
+        if (ans.notes) payload.notes = ans.notes;
+        var genres = genresFromFanDnaCategories(ans.fanDna.categories);
+        if (genres.length) {
+          payload.genres = genres;
+        } else if (fanOnly && existingProfile && Array.isArray(existingProfile.genres) && existingProfile.genres.length) {
+          payload.genres = existingProfile.genres.slice();
+        }
+        return payload;
+      }
+
+      function hydrateSavedAnswers(profile, prefs) {
+        var p = profile || {};
+        var fd = p.fanDna || {};
+        if (p.homeIata) {
+          ans.homeIata = String(p.homeIata).toUpperCase();
+          ans.locationCity = p.locationCity || ans.locationCity;
+          ans.locationCountry = p.locationCountry || ans.locationCountry;
+        }
+        if (typeof p.marketingOptIn === 'boolean') ans.marketingOptIn = p.marketingOptIn;
+        if (p.language) ans.language = p.language;
+        if (p.notes) ans.notes = p.notes;
+        if (Array.isArray(fd.categories) && fd.categories.length) {
+          ans.fanDna.categories = fd.categories.slice();
+        }
+        if (Array.isArray(fd.vibes) && fd.vibes.length) {
+          ans.fanDna.vibes = fd.vibes.slice();
+        }
+        if (Array.isArray(fd.preferred_time) && fd.preferred_time.length) {
+          ans.fanDna.preferred_time = fd.preferred_time.slice();
+        }
+        if (fd.event_size) ans.fanDna.event_size = fd.event_size;
+        if (fd.travel_distance) ans.fanDna.travel_distance = fd.travel_distance;
+        if (fd.budget) ans.fanDna.budget = fd.budget;
+        if (prefs) {
+          if (Array.isArray(prefs.categories)) ans.fanDna.categories = prefs.categories.slice();
+          if (Array.isArray(prefs.vibes)) ans.fanDna.vibes = prefs.vibes.slice();
+          if (Array.isArray(prefs.preferred_time)) {
+            ans.fanDna.preferred_time = prefs.preferred_time.slice();
+          }
+          if (prefs.event_size) ans.fanDna.event_size = prefs.event_size;
+          if (prefs.travel_distance) ans.fanDna.travel_distance = prefs.travel_distance;
+          if (prefs.budget) ans.fanDna.budget = prefs.budget;
+          if (prefs.home_iata) {
+            ans.homeIata = String(prefs.home_iata).toUpperCase();
+          }
+          if (Object.prototype.hasOwnProperty.call(prefs, 'gender')) {
+            ans.gender = prefs.gender || null;
+          }
+          if (Object.prototype.hasOwnProperty.call(prefs, 'profession')) {
+            ans.profession = prefs.profession || null;
+          }
+          if (Object.prototype.hasOwnProperty.call(prefs, 'age_group')) {
+            ans.ageGroup = prefs.age_group || null;
+          }
+        }
+      }
+
+      function applyChipSelections(hostId, selectedIds) {
+        var host = document.getElementById(hostId);
+        if (!host || !selectedIds || !selectedIds.length) return;
+        host.querySelectorAll('.ob-chip').forEach(function (b) {
+          if (selectedIds.indexOf(b.getAttribute('data-id')) >= 0) {
+            b.classList.add('is-on');
+          }
+        });
+      }
+
+      function applyAnswerSelectionsToUi() {
+        var airportHost = document.getElementById('ob-airports');
+        if (airportHost && ans.homeIata) {
+          airportHost.querySelectorAll('.ob-tile').forEach(function (b) {
+            var iata = b.getAttribute('data-iata');
+            if (iata === 'OTHER' && ans.locationCity === 'Custom') {
+              b.classList.add('is-selected');
+              otherMode = true;
+              document.getElementById('ob-other-wrap').classList.add('is-open');
+              document.getElementById('ob-iata-other').value = ans.homeIata;
+            } else if (iata === ans.homeIata) {
+              b.classList.add('is-selected');
+            }
+          });
+        }
+        applyChipSelections('ob-fdna-categories', ans.fanDna.categories);
+        applyChipSelections('ob-fdna-vibes', ans.fanDna.vibes);
+        applyChipSelections('ob-fdna-time', ans.fanDna.preferred_time);
+      }
+
+      function validateStep() {
+        if (step === 1) {
+          if (otherMode) {
+            var raw = document.getElementById('ob-iata-other').value.trim().toUpperCase();
+            if (!/^[A-Z]{3}$/.test(raw)) {
+              showMsg('Enter a valid 3-letter airport code.', true);
+              return false;
+            }
+            ans.homeIata = raw;
+            ans.locationCity = 'Custom';
+            ans.locationCountry = 'Other';
+          }
+          if (!ans.homeIata || !/^[A-Z]{3}$/.test(ans.homeIata)) {
+            showMsg('Pick a home airport first.', true);
+            return false;
+          }
+        }
+        if (step === 2 && ans.fanDna.categories.length < 1) {
+          showMsg('Pick at least one Fan DNA category.', true);
+          return false;
+        }
+        if (step === 4 && !ans.fanDna.event_size) {
+          showMsg('Pick a preferred event size.', true);
+          return false;
+        }
+        if (step === 5 && !ans.fanDna.travel_distance) {
+          showMsg('Pick how far you will travel.', true);
+          return false;
+        }
+        if (step === 6 && ans.fanDna.preferred_time.length < 1) {
+          showMsg('Pick at least one preferred time.', true);
+          return false;
+        }
+        if (step === 7 && !ans.fanDna.budget) {
+          showMsg('Pick a budget range.', true);
+          return false;
+        }
+        if (step === 9 && !ans.profession) {
+          showMsg('Pick what best describes you.', true);
+          return false;
+        }
+        if (step === 10 && !ans.ageGroup) {
+          showMsg('Pick your age group.', true);
+          return false;
+        }
+        return true;
+      }
+
+      function goNext() {
+        if (!validateStep()) return;
+        if (step < TOTAL - 1) {
+          step++;
+          if (step === 4) renderFanDnaSingle('ob-fdna-size', FDNA_SIZES, 'event_size');
+          if (step === 5) renderFanDnaSingle('ob-fdna-travel', FDNA_TRAVEL, 'travel_distance');
+          if (step === 7) renderFanDnaSingle('ob-fdna-budget', FDNA_BUDGET, 'budget');
+          if (step === 8) renderGender();
+          if (step === 9) renderProfession();
+          if (step === 10) renderAge();
+          if (step === 11) renderMarketing();
+          showStep();
+        } else {
+          var body = {
+            homeIata: ans.homeIata,
+            locationCity: ans.locationCity,
+            locationCountry: ans.locationCountry,
+            genres: genresFromFanDnaCategories(ans.fanDna.categories),
+            marketingOptIn: ans.marketingOptIn,
+            language: ans.language,
+            notes: ans.notes,
+          };
+          var nextBtn = document.getElementById('ob-next');
+          nextBtn.disabled = true;
+          var saveChain = fanOnly
+            ? fetch('/api/auth/profile', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'same-origin',
+                body: JSON.stringify(profileSavePayload()),
+              }).then(function (r) {
+                return r.json().then(function (j) {
+                  return { ok: r.ok, j: j };
+                });
+              })
+            : fetch('/api/auth/onboarding', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'same-origin',
+                body: JSON.stringify(body),
+              }).then(function (r) {
+                return r.json().then(function (j) {
+                  return { ok: r.ok, j: j };
+                });
+              });
+          saveChain
+            .then(function (x) {
+              if (!x.ok) {
+                showMsg((x.j && x.j.error) || 'Could not save', true);
+                nextBtn.disabled = false;
+                return;
+              }
+              return fetch('/api/fan-dna/preferences', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'same-origin',
+                body: JSON.stringify(fanDnaSavePayload()),
+              }).then(function (r2) {
+                return r2.json().then(function (j2) {
+                  return { ok: r2.ok, j: j2 };
+                });
+              });
+            })
+            .then(function (x2) {
+              if (!x2) return;
+              if (x2.ok) {
+                location.href = fanOnly ? '/events?tab=fan-dna&refresh=1' : '/events';
+              } else {
+                showMsg((x2.j && x2.j.error) || 'Fan DNA saved locally failed — check Supabase tables.', true);
+                nextBtn.disabled = false;
+              }
+            })
+            .catch(function () {
+              showMsg('Network error — try again.', true);
+              nextBtn.disabled = false;
+            });
+        }
+      }
+
+      function goBack() {
+        if (step > 0) {
+          step--;
+          showStep();
+        }
+      }
+
+      document.getElementById('ob-next').addEventListener('click', goNext);
+      document.getElementById('ob-back').addEventListener('click', goBack);
+      document.getElementById('ob-gender-skip').addEventListener('click', function () {
+        if (step !== 8) return;
+        ans.gender = null;
+        step++;
+        renderProfession();
+        showStep();
+      });
+
+      renderAirports();
+      renderFanDnaChips('ob-fdna-categories', FDNA_CATEGORIES, 'categories');
+      renderFanDnaChips('ob-fdna-vibes', FDNA_VIBES, 'vibes');
+      renderFanDnaChips('ob-fdna-time', FDNA_TIMES, 'preferred_time');
+
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (!r.ok) {
+            location.href = '/auth';
+            return null;
+          }
+          return r.json();
+        })
+        .then(function (data) {
+          if (!data) return;
+          var u = data.user;
+          if (!u) {
+            location.href = '/auth';
+            return;
+          }
+          fanOnly = /(?:\?|&)fanDna=1/.test(location.search || '');
+          existingProfile = u.profile || null;
+          if (u.profile && u.profile.onboardingComplete === true && !fanOnly) {
+            location.replace('/events');
+            return;
+          }
+          if (fanOnly) {
+            return fetch('/api/fan-dna/preferences?_=' + Date.now(), {
+              credentials: 'same-origin',
+              cache: 'no-store',
+              headers: { 'Cache-Control': 'no-cache', Pragma: 'no-cache' },
+            })
+              .then(function (r) {
+                return r.json().catch(function () {
+                  return {};
+                });
+              })
+              .then(function (prefData) {
+                hydrateSavedAnswers(u.profile, prefData && prefData.preferences);
+                applyAnswerSelectionsToUi();
+                showStep();
+              })
+              .catch(function () {
+                showStep();
+              });
+          }
+          showStep();
+        });
+    })();
+  </script>
+</body>
+</html>

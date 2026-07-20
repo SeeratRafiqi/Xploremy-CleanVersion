@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event Explorer · Discover Malaysia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/dash-bg.css" />
+  <style>
+    :root {
+      --bg: #000000;
+      --surface: rgba(30, 30, 30, 0.65);
+      --text: #e5e2e1;
+      --muted: #bdc9c8;
+      --primary: #76d6d5;
+      --primary-deep: #008080;
+      --gold: #e9c349;
+      --border: rgba(255, 255, 255, 0.1);
+      --gutter: clamp(14px, 3.5vw, 52px);
+      --font-display: "Montserrat", system-ui, sans-serif;
+      --font-body: "Inter", system-ui, sans-serif;
+    }
+    html { font-size: 14px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    .lp-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      padding: 0 var(--gutter);
+      background: rgba(19, 19, 19, 0.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .lp-logo {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .lp-nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .lp-btn {
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: transparent;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .lp-btn:hover {
+      color: var(--primary);
+      border-color: rgba(118, 214, 213, 0.35);
+      background: rgba(118, 214, 213, 0.08);
+    }
+    .lp-btn--primary {
+      background: var(--primary);
+      color: #003737;
+      border-color: transparent;
+    }
+    .lp-btn--primary:hover {
+      filter: brightness(1.08);
+      color: #003737;
+    }
+    .lp-main {
+      position: relative;
+      z-index: 1;
+      padding: clamp(40px, 8vw, 72px) var(--gutter) 56px;
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+    .lp-hero {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 36px;
+      align-items: center;
+    }
+    @media (min-width: 900px) {
+      .lp-hero { grid-template-columns: 1.1fr 0.9fr; gap: 48px; }
+    }
+    .lp-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--primary);
+      background: rgba(118, 214, 213, 0.1);
+      border: 1px solid rgba(118, 214, 213, 0.22);
+      margin-bottom: 16px;
+    }
+    .lp-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      max-width: 14ch;
+    }
+    .lp-title span { color: var(--primary); }
+    .lp-lead {
+      margin-top: 14px;
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--muted);
+      max-width: 36rem;
+    }
+    .lp-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .lp-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 22px;
+      border-radius: 12px;
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+    }
+    .lp-cta:active { transform: scale(0.98); }
+    .lp-cta--fill {
+      background: var(--primary);
+      color: #003737;
+      box-shadow: 0 8px 28px rgba(118, 214, 213, 0.25);
+    }
+    .lp-cta--fill:hover { filter: brightness(1.06); }
+    .lp-cta--outline {
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      background: rgba(233, 195, 73, 0.06);
+    }
+    .lp-cta--outline:hover {
+      background: rgba(233, 195, 73, 0.12);
+    }
+    .lp-cta--ghost {
+      color: var(--muted);
+      border: 1px solid var(--border);
+      background: transparent;
+      font-size: 0.82rem;
+    }
+    .lp-visual {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 0 32px rgba(118, 214, 213, 0.12);
+      min-height: 280px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 14px;
+    }
+    .lp-visual::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(145deg, rgba(0, 128, 128, 0.35) 0%, transparent 50%, rgba(233, 195, 73, 0.12) 100%);
+      pointer-events: none;
+    }
+    .lp-visual-card {
+      position: relative;
+      z-index: 1;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(19, 19, 19, 0.75);
+      border: 1px solid var(--border);
+    }
+    .lp-visual-card strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+    .lp-visual-card span {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .lp-visual-match {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 1;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--primary);
+      background: rgba(19, 19, 19, 0.85);
+      border: 1px solid rgba(118, 214, 213, 0.25);
+    }
+    .lp-features {
+      margin-top: 48px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 720px) {
+      .lp-features { grid-template-columns: repeat(3, 1fr); }
+    }
+    .lp-feature {
+      padding: 18px 18px 20px;
+      border-radius: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+    .lp-feature h3 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .lp-feature p {
+      font-size: 0.86rem;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+    .lp-strip {
+      margin-top: 40px;
+      padding: 20px 22px;
+      border-radius: 16px;
+      border: 1px dashed rgba(118, 214, 213, 0.35);
+      background: rgba(118, 214, 213, 0.06);
+      text-align: center;
+    }
+    .lp-strip p {
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .lp-strip a {
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .lp-strip a:hover { text-decoration: underline; }
+    .lp-footer {
+      margin-top: 36px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body class="has-dash-bg">
+  <div class="dash-bg" aria-hidden="true"></div>
+  <header class="lp-header">
+    <a class="lp-logo" href="/">Event Explorer</a>
+    <nav class="lp-nav" aria-label="Account">
+      <a class="lp-btn" href="/auth">Sign in</a>
+      <a class="lp-btn lp-btn--primary" href="/auth#register">Create account</a>
+    </nav>
+  </header>
+
+  <main class="lp-main">
+    <section class="lp-hero">
+      <div>
+        <p class="lp-badge">Malaysia · Live events</p>
+        <h1 class="lp-title">Your nights out, <span>curated by AI</span></h1>
+        <p class="lp-lead">
+          Event Explorer maps concerts, culture, food, and nightlife across KL and beyond — then matches what you love with Fan DNA scoring and a guided vibe finder.
+        </p>
+        <div class="lp-cta-row">
+          <a class="lp-cta lp-cta--fill" href="/auth#register">Get started free</a>
+          <a class="lp-cta lp-cta--outline" href="/auth">Sign in</a>
+          <a class="lp-cta lp-cta--ghost" href="/events">Browse events</a>
+        </div>
+      </div>
+      <div class="lp-visual" aria-hidden="true">
+        <span class="lp-visual-match">94% match</span>
+        <div class="lp-visual-card">
+          <strong>Skyline Jazz &amp; Bourbon</strong>
+          <span>KLCC · This weekend · From RM 220</span>
+        </div>
+        <div class="lp-visual-card">
+          <strong>Fan DNA</strong>
+          <span>Music · Nightlife · Medium crowds · RM budget</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="lp-features" aria-label="Why sign up">
+      <article class="lp-feature">
+        <h3>Guided discovery</h3>
+        <p>Answer a few vibe questions and watch the grid filter to events that fit your energy, budget, and timing.</p>
+      </article>
+      <article class="lp-feature">
+        <h3>Fan DNA matches</h3>
+        <p>Save your taste profile once — we score every listing so your best fits rise to the top.</p>
+      </article>
+      <article class="lp-feature">
+        <h3>Plan the full trip</h3>
+        <p>Book tickets, sketch itineraries, and pair flights when you’re ready to go all in.</p>
+      </article>
+    </section>
+
+    <div class="lp-strip">
+      <p>Already exploring? <a href="/events">Continue to Discover</a> — or <a href="/auth#register">create an account</a> to unlock Fan DNA and saved trips.</p>
+    </div>
+
+    <footer class="lp-footer">Event Explorer · Scraped live from Malaysia’s top ticket platforms</footer>
+  </main>
+
+  <script>
+    (function () {
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (!r.ok) return null;
+          return r.json();
+        })
+        .then(function (j) {
+          if (!j || !j.user) return;
+          var u = j.user;
+          if (u.profile && u.profile.onboardingComplete === false) {
+            location.replace('/onboarding');
+            return;
+          }
+          location.replace('/events');
+        })
+        .catch(function () {});
+    })();
+  </script>
+</body>
+</html>

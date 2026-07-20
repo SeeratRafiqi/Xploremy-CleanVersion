@@ -1,0 +1,14 @@
+node_modules/
+.env
+*.env
+!.env.example
+backend/data/users.json
+
+# Stray local secret dumps (never commit)
+Untitled
+**/Untitled
+
+# Debug / scratch artifacts
+debug-*.txt
+debug-run-*.txt
+debug-keys-*.txt

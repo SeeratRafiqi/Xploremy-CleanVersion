@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Event Assistant · Event Explorer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --surface: rgba(22, 22, 22, 0.92);
+      --surface-2: rgba(30, 30, 30, 0.75);
+      --line: rgba(255, 255, 255, 0.1);
+      --ink: #e5e2e1;
+      --muted: #a3a3a3;
+      --accent: #00d4aa;
+      --accent-soft: #76d6d5;
+      --accent-deep: #00a884;
+      --danger: #ff8a8a;
+      --radius: 12px;
+      --font-display: "Montserrat", system-ui, sans-serif;
+      --font-body: "Inter", system-ui, sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font-body);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(0, 212, 170, 0.08), transparent 28rem),
+        radial-gradient(circle at 88% 12%, rgba(118, 214, 213, 0.06), transparent 24rem),
+        var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px;
+      width: 100%;
+    }
+    .top-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent-soft);
+      text-decoration: none;
+    }
+    .top-link:hover { color: #fff; }
+    h1 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+    p.sub {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+      line-height: 1.55;
+    }
+    #log {
+      flex: 1;
+      overflow-y: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      background: rgba(10, 10, 10, 0.5);
+      margin-bottom: 16px;
+      min-height: 200px;
+      max-height: min(50vh, 400px);
+      white-space: pre-wrap;
+      line-height: 1.55;
+      font-size: 0.88rem;
+    }
+    .msg-user {
+      color: var(--accent-soft);
+      margin-bottom: 12px;
+      font-weight: 600;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(0, 212, 170, 0.1);
+      border: 1px solid rgba(118, 214, 213, 0.2);
+    }
+    .msg-bot {
+      color: var(--muted);
+      margin-bottom: 12px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .cards-wrap {
+      margin-top: 14px;
+      margin-bottom: 12px;
+      display: none;
+    }
+    .cards-title {
+      color: var(--accent-soft);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 12px;
+    }
+    .card {
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 212, 170, 0.1);
+    }
+    .card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      background: #1a1a1a;
+    }
+    .no-img {
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(118, 214, 213, 0.15), rgba(30, 30, 30, 0.9));
+      color: var(--accent-soft);
+      font-size: 28px;
+    }
+    .card-body { padding: 12px; }
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      color: var(--ink);
+      margin-bottom: 6px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .card-meta {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .card-link {
+      display: inline-block;
+      margin-top: 8px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .card-link:hover { color: #fff; }
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: flex-end;
+    }
+    textarea {
+      flex: 1;
+      min-width: 200px;
+      min-height: 80px;
+      padding: 12px 14px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: rgba(32, 31, 31, 0.9);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    textarea::placeholder { color: #737373; }
+    textarea:focus {
+      border-color: rgba(118, 214, 213, 0.45);
+      box-shadow: 0 0 0 2px rgba(118, 214, 213, 0.12);
+    }
+    button {
+      padding: 12px 20px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+      color: #003737;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-family: var(--font-body);
+      transition: filter 0.2s;
+    }
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    button:hover:not(:disabled) { filter: brightness(1.06); }
+    .err { color: var(--danger); font-size: 0.82rem; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="top-link" href="/events">← Back to events</a>
+    <h1>Event assistant</h1>
+    <p class="sub">Describe your mood, budget, or music taste — we'll suggest events from your scraped data.</p>
+    <div id="log" aria-live="polite"></div>
+    <div id="cardsWrap" class="cards-wrap">
+      <p class="cards-title">Suggested events</p>
+      <div id="cardsGrid" class="cards-grid"></div>
+    </div>
+    <div class="row">
+      <textarea id="message" placeholder="e.g. I want something energetic this weekend under RM200…"></textarea>
+      <button type="button" id="send">Send</button>
+    </div>
+    <p id="err" class="err" role="alert"></p>
+  </div>
+  <script>
+    const logEl = document.getElementById('log');
+    const messageEl = document.getElementById('message');
+    const sendBtn = document.getElementById('send');
+    const errEl = document.getElementById('err');
+    const cardsWrap = document.getElementById('cardsWrap');
+    const cardsGrid = document.getElementById('cardsGrid');
+    const CHAT_HISTORY_KEY = 'ticket_scraper_chat_history_v1';
+    const chatHistory = [];
+    let lastShownEvents = [];
+
+    function persistChatHistory() {
+      try {
+        window.localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(chatHistory.slice(-24)));
+      } catch (_) {}
+    }
+
+    function restoreChatHistory() {
+      try {
+        const raw = window.localStorage.getItem(CHAT_HISTORY_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return;
+        for (const item of parsed) {
+          if (!item || (item.role !== 'user' && item.role !== 'assistant')) continue;
+          if (typeof item.content !== 'string') continue;
+          chatHistory.push({ role: item.role, content: item.content });
+          append(item.role, item.content);
+        }
+      } catch (_) {}
+    }
+
+    function append(role, text) {
+      const div = document.createElement('div');
+      div.className = role === 'user' ? 'msg-user' : 'msg-bot';
+      div.textContent = (role === 'user' ? 'You: ' : 'Assistant: ') + text;
+      logEl.appendChild(div);
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    function cardHtml(e) {
+      return `
+        <div class="card">
+          ${e.image
+            ? `<img src="${e.image}" alt="${e.title}" width="400" height="240" loading="lazy" decoding="async" fetchpriority="low" onerror="this.outerHTML='<div class=\\'no-img\\'>🎟️</div>'" />`
+            : `<div class="no-img">🎟️</div>`}
+          <div class="card-body">
+            <div class="card-title">${e.title || 'Untitled Event'}</div>
+            <div class="card-meta">📅 ${e.date ? new Date(e.date).toDateString() : 'Date TBA'}</div>
+            <div class="card-meta">📍 ${e.venue || 'Unknown Venue'}</div>
+            <div class="card-meta">💰 ${e.price || 'Paid'} • ${e.source || 'Unknown'}</div>
+            ${e.url ? `<a class="card-link" href="${e.url}" target="_blank" rel="noopener noreferrer">Open source link →</a>` : ''}
+          </div>
+        </div>`;
+    }
+
+    async function send() {
+      const message = (messageEl.value || '').trim();
+      if (!message) return;
+      errEl.textContent = '';
+      cardsWrap.style.display = 'none';
+      cardsGrid.innerHTML = '';
+      const historyPrior = chatHistory.map(function (h) {
+        return { role: h.role, content: h.content };
+      });
+      append('user', message);
+      messageEl.value = '';
+      chatHistory.push({ role: 'user', content: message });
+      persistChatHistory();
+      sendBtn.disabled = true;
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message, history: historyPrior, recentEvents: lastShownEvents }),
+        });
+        const data = await res.json().catch(() => ({}));
+        const reply = data.reply || (res.ok ? '' : 'Request failed');
+        if (!res.ok && !data.reply) {
+          append('bot', data.error || 'Something went wrong (' + res.status + ')');
+          chatHistory.pop();
+        } else {
+          append('bot', reply);
+          chatHistory.push({ role: 'assistant', content: reply || '' });
+          while (chatHistory.length > 24) chatHistory.shift();
+          persistChatHistory();
+          if (Array.isArray(data.events) && data.events.length > 0) {
+            lastShownEvents = data.events.slice();
+            cardsGrid.innerHTML = data.events.map((e) => cardHtml(e)).join('');
+            cardsWrap.style.display = 'block';
+          }
+        }
+      } catch (e) {
+        append('bot', 'Network error: ' + (e.message || 'unknown'));
+        chatHistory.pop();
+        persistChatHistory();
+      } finally {
+        sendBtn.disabled = false;
+      }
+    }
+
+    sendBtn.addEventListener('click', send);
+    messageEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        send();
+      }
+    });
+
+    function greetIfEmpty() {
+      if (chatHistory.length > 0) return;
+      append(
+        'bot',
+        "Hi, I'm Eve, your event sidekick! 🎟️ How can I help you today?",
+      );
+    }
+
+    restoreChatHistory();
+    greetIfEmpty();
+  </script>
+</body>
+</html>

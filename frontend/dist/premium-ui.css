@@ -1,0 +1,920 @@
+/**
+ * Premium UI polish — visual layer only.
+ * Load after eventra-ticket-theme.css. Scoped to body.theme-eventra.
+ */
+
+body.theme-eventra {
+  --premium-bg: #fbfaf8;
+  --premium-bg-2: #f3f0ea;
+  --premium-surface: #ffffff;
+  --premium-text: #0f1724;
+  --premium-muted: #6b6f76;
+  --premium-accent: #cda34e;
+  --premium-accent-deep: #b8862b;
+  --premium-accent-soft: rgba(205, 163, 78, 0.18);
+  --premium-line: rgba(15, 23, 36, 0.1);
+  --premium-shadow: rgba(16, 24, 40, 0.08);
+  --premium-shadow-hover: rgba(16, 24, 40, 0.14);
+  --premium-radius-sm: 8px;
+  --premium-radius-md: 12px;
+  --premium-radius-lg: 16px;
+  --premium-ease: cubic-bezier(0.2, 0.9, 0.3, 1);
+  --premium-card-elevation: 0 8px 24px var(--premium-shadow);
+  --premium-card-elevation-hover: 0 18px 36px var(--premium-shadow-hover);
+  --premium-font-display: "Playfair Display", "Cormorant Garamond", Georgia, serif;
+  --premium-font-body: "Inter", "Jost", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --ev-bg: var(--premium-bg);
+  --ev-bg2: var(--premium-bg-2);
+  --ev-ink: var(--premium-text);
+  --ev-muted: var(--premium-muted);
+  --ev-soft: #8a9099;
+  --ev-line: var(--premium-line);
+  --ev-panel: rgba(255, 255, 255, 0.92);
+  --ev-panel2: #ffffff;
+  --ev-cyan: var(--premium-accent);
+  --ev-mint: var(--premium-accent-deep);
+  --ev-gold: var(--premium-accent);
+
+  font-family: var(--premium-font-body) !important;
+  color: var(--premium-text) !important;
+  background: var(--premium-bg) !important;
+  line-height: 1.55;
+}
+
+body.theme-eventra::before {
+  opacity: 0.35;
+  background-size: 72px 72px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), transparent 55%);
+}
+
+body.theme-eventra::after {
+  height: 28vh;
+  background: linear-gradient(to top, rgba(251, 250, 248, 0.95), transparent);
+}
+
+/* ── Header ───────────────────────────────────────── */
+body.theme-eventra header {
+  background: rgba(15, 23, 36, 0.94) !important;
+  border-bottom: 1px solid rgba(205, 163, 78, 0.22) !important;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  height: 84px;
+  padding: 0 clamp(20px, 4vw, 52px);
+}
+
+body.theme-eventra header h1 {
+  font-family: var(--premium-font-display) !important;
+  font-weight: 500 !important;
+  font-size: clamp(1.55rem, 2.2vw, 2rem) !important;
+  letter-spacing: 0.02em !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  color: #f8f4ee !important;
+  position: relative;
+}
+
+body.theme-eventra .header-brand::after {
+  content: "";
+  display: block;
+  width: 42px;
+  height: 2px;
+  margin-top: 6px;
+  background: linear-gradient(90deg, var(--premium-accent), transparent);
+  border-radius: 2px;
+}
+
+body.theme-eventra .header-eyebrow {
+  color: rgba(205, 163, 78, 0.88) !important;
+  letter-spacing: 0.22em !important;
+  font-weight: 600 !important;
+  font-size: 0.68rem !important;
+}
+
+body.theme-eventra #last-updated {
+  display: none !important;
+}
+
+body.theme-eventra .header-actions {
+  margin-left: auto !important;
+  justify-content: flex-end !important;
+}
+
+body.theme-eventra .header-auth-link {
+  border-color: rgba(205, 163, 78, 0.35) !important;
+  color: rgba(248, 244, 238, 0.88) !important;
+  border-radius: 999px !important;
+  transition: background 0.25s var(--premium-ease), border-color 0.25s var(--premium-ease),
+    transform 0.2s var(--premium-ease);
+}
+
+body.theme-eventra .header-auth-link:hover {
+  background: rgba(205, 163, 78, 0.14) !important;
+  color: #fff !important;
+}
+
+body.theme-eventra .header-auth-link--gold {
+  background: linear-gradient(180deg, var(--premium-accent), var(--premium-accent-deep)) !important;
+  color: #1a1408 !important;
+  border-color: transparent !important;
+  box-shadow: 0 6px 18px rgba(205, 163, 78, 0.28);
+}
+
+body.theme-eventra .header-auth-chip {
+  color: var(--premium-accent) !important;
+  border-color: rgba(205, 163, 78, 0.4) !important;
+}
+
+/* ── Hero ─────────────────────────────────────────── */
+body.theme-eventra .hero-banner {
+  background: linear-gradient(165deg, #0c1219 0%, #152a35 42%, #1e3a2f 100%) !important;
+  border-bottom: 1px solid rgba(205, 163, 78, 0.15) !important;
+  padding: clamp(40px, 6vw, 64px) clamp(24px, 5vw, 52px) 0 !important;
+}
+
+body.theme-eventra .hero-banner-watermark {
+  color: rgba(205, 163, 78, 0.05) !important;
+}
+
+body.theme-eventra .hero-banner-eyebrow {
+  color: rgba(205, 163, 78, 0.9) !important;
+  letter-spacing: 0.24em !important;
+}
+
+body.theme-eventra .hero-banner-title {
+  font-family: var(--premium-font-display) !important;
+  font-weight: 400 !important;
+  font-size: clamp(2.4rem, 5vw, 3.4rem) !important;
+  line-height: 1.08 !important;
+  color: #f8f4ee !important;
+  letter-spacing: 0.01em !important;
+}
+
+body.theme-eventra .hero-banner-title em {
+  font-style: italic !important;
+  background: linear-gradient(100deg, #f5e6c8, var(--premium-accent) 55%, #e8d4a8) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
+body.theme-eventra .hero-banner-sub {
+  color: rgba(248, 244, 238, 0.72) !important;
+  font-size: 0.95rem !important;
+  line-height: 1.75 !important;
+  max-width: 440px;
+}
+
+body.theme-eventra .hero-stat-box {
+  border-color: rgba(205, 163, 78, 0.12) !important;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+body.theme-eventra .hero-stat-num {
+  font-family: var(--premium-font-display) !important;
+  color: #f8f4ee !important;
+}
+
+body.theme-eventra .hero-stat-label {
+  color: rgba(205, 163, 78, 0.75) !important;
+}
+
+/* ── Hero chat card ───────────────────────────────── */
+body.theme-eventra .hero-banner .ai-command--guided {
+  margin-top: 20px !important;
+  max-width: min(100%, 440px) !important;
+}
+
+body.theme-eventra .hero-banner .ai-command {
+  margin-top: 36px;
+  padding: 14px 16px 16px;
+  border-radius: var(--premium-radius-lg) !important;
+  border: 1px solid rgba(205, 163, 78, 0.28) !important;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.14) 0%,
+    rgba(255, 255, 255, 0.06) 100%
+  ) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+body.theme-eventra .hero-banner .ai-command-head .command-question {
+  font-family: var(--premium-font-body) !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase;
+  color: rgba(248, 244, 238, 0.88) !important;
+}
+
+body.theme-eventra .hero-banner .ai-command input#hero-ai-input {
+  min-height: 56px;
+  border-radius: 999px !important;
+  background: rgba(8, 14, 12, 0.45) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+  color: #f8f4ee !important;
+  font-size: 1rem !important;
+  padding: 0 20px !important;
+}
+
+body.theme-eventra .hero-banner .ai-command input#hero-ai-input::placeholder {
+  color: rgba(248, 244, 238, 0.5) !important;
+}
+
+body.theme-eventra .hero-banner .ai-command input#hero-ai-input:focus-visible {
+  outline: 2px solid var(--premium-accent) !important;
+  outline-offset: 2px;
+}
+
+body.theme-eventra .hero-banner .ai-command .primary {
+  min-height: 48px;
+  padding: 0 22px !important;
+  border-radius: 999px !important;
+  font-family: var(--premium-font-body) !important;
+  font-weight: 700 !important;
+  font-size: 0.82rem !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #1a1408 !important;
+  background: linear-gradient(180deg, var(--premium-accent), var(--premium-accent-deep)) !important;
+  box-shadow: 0 10px 28px rgba(205, 163, 78, 0.35) !important;
+  transition: transform 0.22s var(--premium-ease), box-shadow 0.22s var(--premium-ease),
+    filter 0.2s ease;
+}
+
+body.theme-eventra .hero-banner .ai-command .primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.04);
+  box-shadow: 0 14px 32px rgba(205, 163, 78, 0.42) !important;
+}
+
+body.theme-eventra .hero-banner .prompt-chips button {
+  border-radius: 999px !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  background: rgba(255, 255, 255, 0.07) !important;
+  color: rgba(248, 244, 238, 0.78) !important;
+  transition: border-color 0.2s var(--premium-ease), background 0.2s var(--premium-ease);
+}
+
+body.theme-eventra .hero-banner .prompt-chips button:hover {
+  border-color: rgba(205, 163, 78, 0.45) !important;
+  color: #fff !important;
+  background: rgba(205, 163, 78, 0.12) !important;
+}
+
+body.theme-eventra .hero-banner .hero-ai-status {
+  color: rgba(248, 244, 238, 0.88) !important;
+}
+
+body.theme-eventra .hero-banner .hero-ai-status.thinking {
+  color: var(--premium-accent) !important;
+}
+
+body.theme-eventra .hero-banner .hero-ai-status.success {
+  color: #9fd4a8 !important;
+}
+
+body.theme-eventra .hero-banner .hero-ai-conversation--legacy,
+body.theme-eventra .hero-banner .hero-ai-conversation.hero-ai-conversation--legacy:not(:empty) {
+  display: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+}
+
+body.theme-eventra .hero-banner .hero-ai-conversation {
+  border-radius: var(--premium-radius-md);
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+body.theme-eventra .hero-banner .hero-ai-conversation .hero-chat-turn--user {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+body.theme-eventra .hero-banner .hero-ai-conversation .hero-chat-turn--bot {
+  background: rgba(205, 163, 78, 0.16) !important;
+  border-color: rgba(205, 163, 78, 0.32) !important;
+}
+
+body.theme-eventra .hero-history-btn {
+  border-color: rgba(205, 163, 78, 0.4) !important;
+  background: rgba(205, 163, 78, 0.14) !important;
+  color: #f8f4ee !important;
+  transition: transform 0.25s var(--premium-ease), box-shadow 0.25s var(--premium-ease);
+}
+
+body.theme-eventra .hero-history-btn:hover {
+  border-color: var(--premium-accent) !important;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
+}
+
+body.theme-eventra .hero-history-badge {
+  background: linear-gradient(180deg, var(--premium-accent), var(--premium-accent-deep)) !important;
+  color: #1a1408 !important;
+}
+
+/* ── Ticker & filters ─────────────────────────────── */
+body.theme-eventra .ticker-wrap {
+  background: #0f1724 !important;
+  border-bottom-color: rgba(205, 163, 78, 0.12) !important;
+}
+
+body.theme-eventra .ticker-item {
+  color: rgba(205, 163, 78, 0.55) !important;
+}
+
+body.theme-eventra .controls {
+  background: var(--premium-surface) !important;
+  border-bottom: 1px solid var(--premium-line) !important;
+  padding: 18px clamp(20px, 4vw, 34px) !important;
+  box-shadow: 0 4px 20px rgba(16, 24, 40, 0.04);
+}
+
+body.theme-eventra .controls-label {
+  color: var(--premium-muted) !important;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+}
+
+body.theme-eventra input,
+body.theme-eventra select {
+  background: var(--premium-bg) !important;
+  border: 1px solid var(--premium-line) !important;
+  color: var(--premium-text) !important;
+  border-radius: var(--premium-radius-sm) !important;
+  transition: border-color 0.2s var(--premium-ease), box-shadow 0.2s var(--premium-ease);
+}
+
+body.theme-eventra input:focus,
+body.theme-eventra select:focus,
+body.theme-eventra input:focus-visible,
+body.theme-eventra select:focus-visible {
+  border-color: rgba(205, 163, 78, 0.55) !important;
+  box-shadow: 0 0 0 3px var(--premium-accent-soft) !important;
+  outline: none;
+}
+
+body.theme-eventra input::placeholder {
+  color: #9aa0a8 !important;
+}
+
+body.theme-eventra .stats {
+  background: var(--premium-bg-2) !important;
+  color: var(--premium-muted) !important;
+  border-bottom-color: var(--premium-line) !important;
+}
+
+body.theme-eventra .stats span {
+  color: var(--premium-accent-deep) !important;
+  font-weight: 700;
+}
+
+/* ── Grid section ─────────────────────────────────── */
+body.theme-eventra .grid-section-head {
+  padding: 36px clamp(20px, 4vw, 34px) 0 !important;
+}
+
+body.theme-eventra .grid-sec-eyebrow {
+  color: var(--premium-accent-deep) !important;
+}
+
+body.theme-eventra .grid-sec-eyebrow::before {
+  background: var(--premium-accent) !important;
+}
+
+body.theme-eventra .grid-sec-title {
+  font-family: var(--premium-font-display) !important;
+  font-size: clamp(1.6rem, 3vw, 2rem) !important;
+  color: var(--premium-text) !important;
+}
+
+body.theme-eventra .source-badge {
+  background: var(--premium-surface) !important;
+  border: 1px solid var(--premium-line) !important;
+  border-radius: var(--premium-radius-sm) !important;
+  box-shadow: 0 2px 8px var(--premium-shadow);
+}
+
+body.theme-eventra .source-badge-num {
+  font-family: var(--premium-font-display) !important;
+  color: var(--premium-accent-deep) !important;
+}
+
+body.theme-eventra .grid-frame {
+  background: var(--premium-bg) !important;
+  padding: 32px clamp(16px, 3vw, 28px) 56px !important;
+}
+
+body.theme-eventra .events-chat-banner {
+  background: var(--premium-surface) !important;
+  border-color: var(--premium-line) !important;
+  border-radius: var(--premium-radius-md) !important;
+  box-shadow: var(--premium-card-elevation);
+}
+
+body.theme-eventra .events-chat-banner strong {
+  color: var(--premium-accent-deep) !important;
+}
+
+body.theme-eventra .events-chat-banner-clear {
+  border-radius: 999px !important;
+  transition: border-color 0.2s var(--premium-ease), background 0.2s var(--premium-ease);
+}
+
+body.theme-eventra .events-chat-banner-clear:hover {
+  border-color: var(--premium-accent) !important;
+  background: var(--premium-accent-soft) !important;
+}
+
+/* ── Event cards ──────────────────────────────────── */
+body.theme-eventra .card {
+  background: var(--premium-surface) !important;
+  border: 1px solid var(--premium-line) !important;
+  border-radius: var(--premium-radius-md) !important;
+  box-shadow: var(--premium-card-elevation) !important;
+  backdrop-filter: none !important;
+  transition: transform 0.28s var(--premium-ease), box-shadow 0.28s var(--premium-ease) !important;
+}
+
+body.theme-eventra .card::after {
+  background: linear-gradient(90deg, var(--premium-accent), var(--premium-accent-deep)) !important;
+  height: 3px;
+}
+
+body.theme-eventra .card:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: var(--premium-card-elevation-hover) !important;
+  background: #fffefb !important;
+}
+
+body.theme-eventra .card-img-wrap {
+  position: relative;
+}
+
+body.theme-eventra .card-img-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(15, 23, 36, 0.35), transparent 48%);
+  pointer-events: none;
+}
+
+body.theme-eventra .card-title {
+  font-family: var(--premium-font-display) !important;
+  font-size: 1.28rem !important;
+  font-weight: 500 !important;
+  color: var(--premium-text) !important;
+  line-height: 1.25 !important;
+}
+
+body.theme-eventra .card-meta {
+  font-size: 0.72rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em !important;
+  color: var(--premium-muted) !important;
+}
+
+body.theme-eventra .card-summary {
+  color: var(--premium-muted) !important;
+  font-size: 0.9rem !important;
+}
+
+body.theme-eventra .badge-free {
+  background: linear-gradient(135deg, rgba(205, 163, 78, 0.22), rgba(205, 163, 78, 0.12)) !important;
+  color: var(--premium-accent-deep) !important;
+  border: 1px solid rgba(205, 163, 78, 0.35) !important;
+  border-radius: 999px !important;
+}
+
+body.theme-eventra .badge-paid,
+body.theme-eventra .badge-category {
+  border-radius: 999px !important;
+  color: var(--premium-muted) !important;
+  border-color: var(--premium-line) !important;
+}
+
+body.theme-eventra .card-link {
+  border-radius: 999px !important;
+  background: linear-gradient(180deg, var(--premium-accent), var(--premium-accent-deep)) !important;
+  color: #1a1408 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  box-shadow: 0 6px 16px rgba(205, 163, 78, 0.25);
+  transition: transform 0.2s var(--premium-ease), box-shadow 0.2s var(--premium-ease), filter 0.2s ease;
+}
+
+body.theme-eventra .card-link:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+body.theme-eventra mark.chat-highlight,
+mark.chat-highlight {
+  background: var(--premium-accent-soft) !important;
+  color: inherit;
+  padding: 0.05rem 0.2rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+body.theme-eventra .empty,
+body.theme-eventra .loading {
+  font-family: var(--premium-font-display) !important;
+  color: var(--premium-muted) !important;
+}
+
+body.theme-eventra .grid-skeleton-card {
+  border-radius: var(--premium-radius-md) !important;
+  border-color: var(--premium-line) !important;
+  box-shadow: var(--premium-card-elevation);
+}
+
+/* ── History panel ────────────────────────────────── */
+body.theme-eventra .hero-history-overlay .hero-history-backdrop {
+  background: rgba(15, 23, 36, 0.45);
+}
+
+body.theme-eventra .hero-history-panel {
+  box-shadow: -16px 0 48px rgba(16, 24, 40, 0.12);
+  transition: transform 0.32s var(--premium-ease);
+}
+
+body.theme-eventra .hero-history-panel-head h3 {
+  font-family: var(--premium-font-display) !important;
+  font-weight: 500 !important;
+}
+
+body.theme-eventra .hero-history-item {
+  border-radius: var(--premium-radius-md) !important;
+  transition: border-color 0.2s var(--premium-ease), background 0.2s var(--premium-ease),
+    transform 0.2s var(--premium-ease);
+}
+
+body.theme-eventra .hero-history-item:hover {
+  border-color: rgba(205, 163, 78, 0.45) !important;
+  background: #fffefb !important;
+  transform: translateX(2px);
+}
+
+body.theme-eventra .hero-history-close,
+body.theme-eventra .hero-history-clear {
+  border-radius: 999px !important;
+  transition: border-color 0.2s var(--premium-ease), color 0.2s var(--premium-ease);
+}
+
+body.theme-eventra .hero-history-clear:hover {
+  border-color: rgba(180, 80, 80, 0.45) !important;
+}
+
+/* ── FAB / drawer (visual only) ───────────────────── */
+body.theme-eventra #ai-fab {
+  background: linear-gradient(180deg, var(--premium-accent), var(--premium-accent-deep)) !important;
+  box-shadow: 0 10px 28px rgba(205, 163, 78, 0.4) !important;
+}
+
+body.theme-eventra .ai-drawer {
+  border-radius: var(--premium-radius-lg) var(--premium-radius-lg) 0 0 !important;
+}
+
+/* Chat drawer: dark panel — keep light text (premium --ev-ink is dark body text) */
+body.theme-eventra #chat-log {
+  background: rgba(12, 22, 34, 0.92) !important;
+  border: 1px solid rgba(205, 163, 78, 0.22) !important;
+  color: #f5fbff !important;
+}
+
+body.theme-eventra .msg-user {
+  color: #e8c878 !important;
+  font-weight: 600;
+}
+
+body.theme-eventra .msg-bot {
+  color: rgba(245, 251, 255, 0.88) !important;
+}
+
+body.theme-eventra #chat-message {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(205, 163, 78, 0.35) !important;
+  color: #f5fbff !important;
+}
+
+body.theme-eventra #chat-message::placeholder {
+  color: rgba(245, 251, 255, 0.45) !important;
+}
+
+body.theme-eventra .hero-banner .hero-ai-conversation .hero-chat-turn,
+body.theme-eventra .hero-banner .hero-ai-conversation .hero-chat-turn--user {
+  color: #f8f4ee !important;
+}
+
+body.theme-eventra .hero-banner .hero-ai-conversation .hero-chat-turn--bot {
+  color: rgba(248, 244, 238, 0.92) !important;
+}
+
+body.theme-eventra .hero-guided-header-title {
+  color: #f8f4ee !important;
+}
+
+body.theme-eventra .hero-guided-header-sub {
+  color: rgba(248, 244, 238, 0.55) !important;
+}
+
+body.theme-eventra .hero-guided-bubble--bot {
+  background: linear-gradient(145deg, rgba(22, 38, 58, 0.95) 0%, rgba(14, 26, 42, 0.98) 100%) !important;
+  color: rgba(248, 244, 238, 0.92) !important;
+  border-color: rgba(110, 196, 240, 0.22) !important;
+}
+
+body.theme-eventra .hero-guided-bubble--user {
+  background: linear-gradient(135deg, rgba(205, 163, 78, 0.95) 0%, rgba(184, 134, 43, 0.92) 100%) !important;
+  color: #1a1408 !important;
+  border-color: rgba(255, 220, 160, 0.5) !important;
+}
+
+body.theme-eventra .hero-guided-chip {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.04) 100%) !important;
+  color: rgba(248, 244, 238, 0.92) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+}
+
+body.theme-eventra .hero-guided-chip:hover {
+  border-color: rgba(205, 163, 78, 0.55) !important;
+}
+
+body.theme-eventra .hero-guided-chip--primary {
+  background: linear-gradient(135deg, var(--pg-forest) 0%, var(--pg-forest2) 100%) !important;
+  color: var(--pg-gold) !important;
+}
+
+body.theme-eventra .hero-guided-find-btn {
+  background: linear-gradient(135deg, #e8c878 0%, var(--premium-accent) 45%, var(--premium-accent-deep) 100%) !important;
+  color: #1a1408 !important;
+  border: none !important;
+}
+
+body.theme-eventra .hero-guided-chip--ghost {
+  background: transparent !important;
+  color: rgba(248, 244, 238, 0.7) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+body.theme-eventra .hero-guided-chip--accent {
+  border-color: rgba(110, 196, 240, 0.35) !important;
+  color: rgba(220, 240, 255, 0.95) !important;
+}
+
+body.theme-eventra .hero-guided-pill {
+  background: rgba(205, 163, 78, 0.14) !important;
+  color: #f5e6c8 !important;
+  border-color: rgba(205, 163, 78, 0.45) !important;
+}
+
+body.theme-eventra .hero-guided-options-label {
+  color: rgba(248, 244, 238, 0.5) !important;
+}
+
+/* ── Event hub modal — matches site teal dark theme ─ */
+body.theme-eventra .event-hub-modal {
+  --eh-bg: #0a0a0a;
+  --eh-bg-2: #141414;
+  --eh-card: rgba(30, 30, 30, 0.75);
+  --eh-line: rgba(255, 255, 255, 0.1);
+  --eh-ink: #e5e2e1;
+  --eh-muted: #a3a3a3;
+  --eh-accent: #76d6d5;
+  --eh-accent-dim: #00a884;
+}
+
+body.theme-eventra .event-hub-panel {
+  width: min(680px, min(92vw, 92dvw)) !important;
+  background: linear-gradient(165deg, #12181a 0%, #0e1214 38%, #0a0c0e 72%, #080808 100%) !important;
+  color: var(--eh-ink) !important;
+  border: none !important;
+  box-shadow:
+    0 44px 100px rgba(0, 0, 0, 0.58),
+    0 0 0 1px rgba(118, 214, 213, 0.12),
+    0 0 60px rgba(0, 212, 170, 0.14),
+    0 0 120px rgba(0, 212, 170, 0.06) !important;
+}
+
+body.theme-eventra .event-hub-backdrop {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 35%, rgba(0, 212, 170, 0.12), transparent 62%),
+    radial-gradient(ellipse 50% 40% at 80% 70%, rgba(118, 214, 213, 0.06), transparent 55%),
+    rgba(10, 10, 10, 0.72) !important;
+}
+
+body.theme-eventra .event-hub-top .itin-icon-btn {
+  border-color: rgba(118, 214, 213, 0.25) !important;
+  background: rgba(30, 30, 30, 0.85) !important;
+  color: var(--eh-muted) !important;
+}
+
+body.theme-eventra .event-hub-top .itin-icon-btn:hover {
+  background: var(--eh-card) !important;
+  color: var(--eh-ink) !important;
+}
+
+body.theme-eventra .event-hub-hero {
+  border-bottom-color: var(--eh-line) !important;
+}
+
+body.theme-eventra .event-hub-hero-img-wrap {
+  background: var(--eh-card) !important;
+  border-color: var(--eh-line) !important;
+}
+
+body.theme-eventra .event-hub-eyebrow {
+  color: var(--eh-accent) !important;
+}
+
+body.theme-eventra .event-hub-title {
+  color: var(--eh-ink) !important;
+}
+
+body.theme-eventra .event-hub-meta {
+  color: var(--eh-muted) !important;
+}
+
+body.theme-eventra .eh-trip-strip {
+  background: var(--eh-bg-2) !important;
+  border-bottom-color: var(--eh-line) !important;
+}
+
+body.theme-eventra .eh-trip-strip h3 {
+  color: var(--eh-ink) !important;
+}
+
+body.theme-eventra .eh-trip-strip > p:not([hidden]),
+body.theme-eventra .eh-trip-strip .eh-trip-strip-hint {
+  color: var(--eh-muted) !important;
+}
+
+body.theme-eventra .eh-copilot {
+  border-color: rgba(118, 214, 213, 0.28) !important;
+  background: rgba(30, 30, 30, 0.65) !important;
+}
+
+body.theme-eventra .eh-copilot__title,
+body.theme-eventra .eh-copilot__summary,
+body.theme-eventra .eh-itin-section-title {
+  color: var(--eh-ink) !important;
+}
+
+body.theme-eventra .eh-copilot-chip {
+  color: var(--eh-ink) !important;
+  border-color: var(--eh-line) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+body.theme-eventra .eh-copilot-chip.is-selected {
+  border-color: rgba(118, 214, 213, 0.5) !important;
+  background: rgba(0, 212, 170, 0.12) !important;
+}
+
+body.theme-eventra .eh-copilot__profile-foot,
+body.theme-eventra .eh-auto-travel-status {
+  color: var(--eh-muted) !important;
+}
+
+body.theme-eventra .eh-event-desc {
+  color: var(--eh-ink) !important;
+  background: var(--eh-card) !important;
+  border-color: var(--eh-line) !important;
+}
+
+body.theme-eventra .event-hub-tabs {
+  background: rgba(8, 16, 28, 0.45) !important;
+  border-bottom-color: var(--eh-line) !important;
+}
+
+body.theme-eventra .eh-tab {
+  color: var(--eh-muted) !important;
+}
+
+body.theme-eventra .eh-tab:hover {
+  color: var(--eh-ink) !important;
+  background: rgba(118, 214, 213, 0.08) !important;
+}
+
+body.theme-eventra .eh-tab--active {
+  color: var(--eh-ink) !important;
+  background: rgba(30, 30, 30, 0.65) !important;
+}
+
+body.theme-eventra .eh-tab::after {
+  background: var(--eh-accent) !important;
+}
+
+body.theme-eventra .eh-panel h3 {
+  color: var(--eh-ink) !important;
+}
+
+body.theme-eventra .eh-panel p,
+body.theme-eventra .eh-muted {
+  color: var(--eh-muted) !important;
+}
+
+body.theme-eventra .eh-field label {
+  color: var(--eh-accent) !important;
+}
+
+body.theme-eventra .eh-field input {
+  background: var(--eh-card) !important;
+  border-color: var(--eh-line) !important;
+  color: var(--eh-ink) !important;
+}
+
+body.theme-eventra .eh-field input:focus {
+  border-color: rgba(118, 214, 213, 0.45) !important;
+  box-shadow: 0 0 0 3px rgba(118, 214, 213, 0.12) !important;
+}
+
+body.theme-eventra .eh-btn--gold {
+  background: linear-gradient(135deg, #00d4aa, #00a884) !important;
+  color: #003737 !important;
+}
+
+body.theme-eventra .eh-btn--ghost {
+  color: var(--eh-ink) !important;
+  border-color: var(--eh-line) !important;
+}
+
+body.theme-eventra .eh-btn--ghost:hover {
+  border-color: var(--eh-accent) !important;
+  color: #fff !important;
+}
+
+body.theme-eventra .eh-hub-flight-summary {
+  background: var(--eh-card) !important;
+  border-color: var(--eh-line) !important;
+  color: var(--eh-ink) !important;
+}
+
+body.theme-eventra .event-hub-scroll {
+  scrollbar-color: rgba(118, 214, 213, 0.35) rgba(10, 10, 10, 0.35) !important;
+}
+
+body.theme-eventra .event-hub-scroll-hint {
+  color: var(--eh-accent) !important;
+}
+
+body.theme-eventra .event-hub-scroll .eh-flight-row,
+body.theme-eventra .event-hub-scroll .eh-hotel-row {
+  background: var(--eh-card) !important;
+  border-color: var(--eh-line) !important;
+}
+
+body.theme-eventra .event-hub-scroll .eh-route-bar {
+  background: var(--eh-card) !important;
+  border-color: var(--eh-line) !important;
+}
+
+body.theme-eventra .event-hub-scroll .eh-route-bar strong,
+body.theme-eventra .event-hub-scroll .eh-route-line {
+  color: var(--eh-ink) !important;
+}
+
+body.theme-eventra .event-hub-scroll .eh-route-dates,
+body.theme-eventra .event-hub-scroll .eh-flight-sub {
+  color: var(--eh-muted) !important;
+}
+
+body.theme-eventra .event-hub-scroll .eh-price {
+  color: var(--eh-accent) !important;
+}
+
+/* ── Focus visible ────────────────────────────────── */
+body.theme-eventra :focus-visible {
+  outline: 2px solid var(--premium-accent);
+  outline-offset: 2px;
+}
+
+body.theme-eventra #grid .card[data-ev-idx]:focus-visible {
+  outline-color: var(--premium-accent) !important;
+}
+
+/* ── Reduced motion ───────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  body.theme-eventra .card,
+  body.theme-eventra .card-link,
+  body.theme-eventra .hero-banner .ai-command .primary,
+  body.theme-eventra .hero-history-btn,
+  body.theme-eventra .hero-history-panel,
+  body.theme-eventra .hero-history-item {
+    transition: none !important;
+  }
+
+  body.theme-eventra .card:hover,
+  body.theme-eventra .hero-banner .ai-command .primary:hover:not(:disabled),
+  body.theme-eventra .hero-history-btn:hover,
+  body.theme-eventra .hero-history-item:hover {
+    transform: none !important;
+  }
+}

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fan DNA · Event Explorer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500&family=Jost:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/eventra-ticket-theme.css" />
+  <link rel="stylesheet" href="/premium-ui.css" />
+  <style>
+    :root {
+      --ivory: #f8f4ee;
+      --forest: #0c1510;
+      --gold: #c8a96e;
+      --muted: rgba(248, 244, 238, 0.62);
+      --rule: rgba(200, 169, 110, 0.28);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: 'Jost', system-ui, sans-serif;
+      background: radial-gradient(120% 90% at 50% -10%, #243d30 0%, var(--forest) 42%, #050807 100%);
+      color: var(--ivory);
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--rule);
+    }
+    header a { color: var(--gold); text-decoration: none; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    .fdna-wrap { max-width: 1100px; margin: 0 auto; padding: 28px 20px 48px; }
+    .fdna-hero { margin-bottom: 28px; }
+    .fdna-eyebrow { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(200, 169, 110, 0.75); }
+    .fdna-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 400;
+      margin: 8px 0 10px;
+    }
+    .fdna-sub { color: var(--muted); max-width: 52ch; line-height: 1.55; }
+    .fdna-prompt {
+      text-align: center;
+      padding: 48px 24px;
+      border: 1px dashed var(--rule);
+      border-radius: 16px;
+      background: rgba(12, 21, 16, 0.6);
+    }
+    .fdna-prompt a {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 12px 22px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #d4b97a, var(--gold));
+      color: var(--forest);
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+    .fdna-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 18px;
+    }
+    .fdna-card {
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      overflow: hidden;
+      background: rgba(12, 21, 16, 0.85);
+      display: flex;
+      flex-direction: column;
+    }
+    .fdna-card img { width: 100%; height: 160px; object-fit: cover; background: #1a2a22; }
+    .fdna-card .no-img {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      background: #1a2a22;
+    }
+    .fdna-card-body { padding: 14px 16px 16px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+    .fdna-score {
+      align-self: flex-start;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(200, 169, 110, 0.2);
+      color: var(--gold);
+      border: 1px solid rgba(200, 169, 110, 0.45);
+    }
+    .fdna-card-title { font-weight: 600; font-size: 1rem; line-height: 1.3; }
+    .fdna-meta { font-size: 0.82rem; color: var(--muted); }
+    .fdna-book {
+      margin-top: auto;
+      display: inline-block;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #d4b97a, var(--gold));
+      color: var(--forest);
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .fdna-empty, .fdna-loading { color: var(--muted); padding: 32px; text-align: center; }
+    .fdna-err { color: #f5c4c4; padding: 12px; border-radius: 8px; background: rgba(120,40,40,0.25); margin-bottom: 16px; }
+    .fdna-card--clickable { cursor: pointer; transition: border-color 0.2s, transform 0.15s; }
+    .fdna-card--clickable:hover { border-color: rgba(200, 169, 110, 0.65); transform: translateY(-2px); }
+    .fdna-tap-hint { font-size: 0.72rem; color: rgba(200, 169, 110, 0.75); letter-spacing: 0.04em; margin-top: 4px; }
+    body.fdna-modal-open { overflow: hidden; }
+    .fdna-modal { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .fdna-modal[hidden] { display: none !important; }
+    .fdna-modal-backdrop { position: absolute; inset: 0; background: rgba(5, 8, 7, 0.82); }
+    .fdna-modal-panel {
+      position: relative;
+      z-index: 1;
+      max-width: 520px;
+      width: 100%;
+      max-height: 88vh;
+      overflow: auto;
+      border: 1px solid var(--rule);
+      border-radius: 16px;
+      background: #0f1814;
+      padding: 22px 20px 24px;
+    }
+    .fdna-modal-close {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      border: none;
+      background: transparent;
+      color: var(--gold);
+      font-size: 1.4rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .fdna-modal-score {
+      display: inline-block;
+      margin: 10px 0 8px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(200, 169, 110, 0.2);
+      color: var(--gold);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .fdna-modal-summary { color: var(--muted); line-height: 1.55; margin-bottom: 16px; font-size: 0.9rem; }
+    .fdna-modal-section h3 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 10px;
+      color: var(--gold);
+    }
+    .fdna-trait-row {
+      border-top: 1px solid rgba(200, 169, 110, 0.15);
+      padding: 12px 0;
+    }
+    .fdna-trait-head { display: flex; justify-content: space-between; font-size: 0.88rem; font-weight: 600; }
+    .fdna-trait-pct { color: var(--gold); }
+    .fdna-trait-bars { display: flex; gap: 12px; font-size: 0.75rem; color: var(--muted); margin: 4px 0 6px; }
+    .fdna-trait-reason { font-size: 0.8rem; color: var(--muted); line-height: 1.45; }
+    .fdna-modal-reasons p { font-size: 0.85rem; color: var(--muted); line-height: 1.5; margin-bottom: 8px; }
+  </style>
+</head>
+<body class="theme-eventra">
+  <header>
+    <a href="/events">← Events</a>
+    <a href="/profile">Profile</a>
+  </header>
+  <main class="fdna-wrap">
+    <div class="fdna-hero">
+      <p class="fdna-eyebrow">Personal match</p>
+      <h1 class="fdna-title">Fan DNA</h1>
+      <p class="fdna-sub">Events ranked by DNA match — your taste profile vs each event's AI-scored traits. Tap a card for the full breakdown.</p>
+    </div>
+    <div id="fdna-err" class="fdna-err" hidden></div>
+    <div id="fdna-root">
+      <p class="fdna-loading">Loading your Fan DNA matches…</p>
+    </div>
+  </main>
+  <div id="fdna-detail-modal" class="fdna-modal" hidden>
+    <div class="fdna-modal-backdrop"></div>
+    <div class="fdna-modal-panel" role="dialog" aria-labelledby="fdna-modal-title">
+      <button type="button" class="fdna-modal-close" id="fdna-modal-close" aria-label="Close">×</button>
+      <h2 id="fdna-modal-title" class="fdna-title" style="font-size:1.35rem;padding-right:28px"></h2>
+      <div id="fdna-modal-body"></div>
+    </div>
+  </div>
+  <script src="/auth-client.js" defer></script>
+  <script src="/book-click-tracker.js" defer></script>
+  <script src="/dna-match-ui.js" defer></script>
+  <script src="/fan-dna-page.js" defer></script>
+</body>
+</html>

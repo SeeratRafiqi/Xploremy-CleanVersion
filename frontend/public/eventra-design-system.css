@@ -1,0 +1,424 @@
+/**
+ * Eventra Phase 2 — global visual design system
+ * Cinematic dark theme, glass surfaces, shared tokens for viewer + auth flows.
+ * Load before eventra-ticket-theme.css and premium-ui.css.
+ */
+
+:root,
+body.theme-eventra,
+body.evr-app {
+  /* ── Color: cinematic dark ───────────────────────── */
+  --evr-bg: #050b12;
+  --evr-bg-2: #071b1f;
+  --evr-bg-3: #0a1210;
+  --evr-ink: #f5fbff;
+  --evr-ink-soft: rgba(245, 251, 255, 0.88);
+  --evr-muted: rgba(245, 251, 255, 0.62);
+  --evr-soft: rgba(245, 251, 255, 0.42);
+  --evr-line: rgba(255, 255, 255, 0.14);
+  --evr-line-strong: rgba(200, 169, 110, 0.28);
+  --evr-glass: rgba(255, 255, 255, 0.06);
+  --evr-surface: rgba(255, 255, 255, 0.08);
+  --evr-surface-2: rgba(255, 255, 255, 0.12);
+  --evr-surface-solid: #0f1724;
+  --evr-accent: #c8a96e;
+  --evr-accent-deep: #a8874a;
+  --evr-accent-soft: rgba(200, 169, 110, 0.18);
+  --evr-cyan: #65e4ff;
+  --evr-mint: #66f2b6;
+  --evr-gold: #f5c86a;
+  --evr-success: #66f2b6;
+  --evr-warning: #f5c86a;
+  --evr-danger: #e88a8a;
+
+  /* Legacy aliases (viewer inline + premium-ui) */
+  --premium-bg: var(--evr-bg);
+  --premium-bg-2: var(--evr-bg-2);
+  --premium-surface: var(--evr-surface);
+  --premium-text: var(--evr-ink);
+  --premium-muted: var(--evr-muted);
+  --premium-accent: var(--evr-accent);
+  --premium-accent-deep: var(--evr-accent-deep);
+  --premium-accent-soft: var(--evr-accent-soft);
+  --premium-line: var(--evr-line);
+  --premium-shadow: rgba(0, 0, 0, 0.28);
+  --premium-shadow-hover: rgba(0, 0, 0, 0.42);
+  --premium-radius-sm: 8px;
+  --premium-radius-md: 12px;
+  --premium-radius-lg: 16px;
+  --premium-ease: cubic-bezier(0.2, 0.9, 0.3, 1);
+  --premium-card-elevation: 0 12px 40px rgba(0, 0, 0, 0.32);
+  --premium-card-elevation-hover: 0 22px 56px rgba(0, 0, 0, 0.45);
+  --premium-font-display: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  --premium-font-body: "Inter", "Jost", system-ui, sans-serif;
+
+  --pg-ivory: var(--evr-ink);
+  --pg-parch: var(--evr-bg-2);
+  --pg-sand: rgba(255, 255, 255, 0.1);
+  --pg-rule: var(--evr-line);
+  --pg-forest: #1e3a2f;
+  --pg-forest2: #2c5040;
+  --pg-gold: var(--evr-accent);
+  --pg-ink: var(--evr-ink);
+  --pg-muted: var(--evr-muted);
+  --pg-warm: var(--evr-soft);
+
+  --ev-bg: var(--evr-bg);
+  --ev-bg2: var(--evr-bg-2);
+  --ev-ink: var(--evr-ink);
+  --ev-muted: var(--evr-muted);
+  --ev-soft: var(--evr-soft);
+  --ev-line: var(--evr-line);
+  --ev-panel: var(--evr-surface);
+  --ev-panel2: var(--evr-surface-2);
+  --ev-cyan: var(--evr-cyan);
+  --ev-mint: var(--evr-mint);
+  --ev-gold: var(--evr-gold);
+  --ev-radius: 10px;
+
+  --ivory: var(--evr-ink);
+  --forest: var(--evr-bg-3);
+  --gold: var(--evr-accent);
+  --muted: var(--evr-muted);
+  --rule: var(--evr-line-strong);
+
+  /* ── Typography scale ───────────────────────────── */
+  --evr-text-xs: 0.68rem;
+  --evr-text-sm: 0.82rem;
+  --evr-text-base: 1rem;
+  --evr-text-lg: 1.125rem;
+  --evr-text-xl: clamp(1.35rem, 2.5vw, 1.65rem);
+  --evr-text-2xl: clamp(1.75rem, 3.5vw, 2.25rem);
+  --evr-text-hero: clamp(2.2rem, 5vw, 3.4rem);
+
+  /* ── Spacing scale ──────────────────────────────── */
+  --evr-space-1: 4px;
+  --evr-space-2: 8px;
+  --evr-space-3: 12px;
+  --evr-space-4: 16px;
+  --evr-space-5: 24px;
+  --evr-space-6: 32px;
+  --evr-space-7: 48px;
+  --layout-gutter: clamp(20px, 4vw, 48px);
+
+  /* ── Motion ─────────────────────────────────────── */
+  --evr-ease: cubic-bezier(0.2, 0.9, 0.3, 1);
+  --evr-duration: 0.25s;
+  --evr-duration-slow: 0.4s;
+}
+
+/* ── App shell (viewer) ───────────────────────────── */
+body.theme-eventra {
+  font-family: var(--premium-font-body);
+  font-size: 16.5px;
+  line-height: 1.55;
+  color: var(--evr-ink);
+  background:
+    radial-gradient(circle at 16% 8%, rgba(101, 228, 255, 0.14), transparent 28rem),
+    radial-gradient(circle at 83% 18%, rgba(102, 242, 182, 0.1), transparent 24rem),
+    linear-gradient(135deg, var(--evr-bg), var(--evr-bg-2) 48%, #090813);
+  min-height: 100vh;
+}
+
+/* ── Auth / onboarding / profile shell ────────────── */
+body.evr-app {
+  font-family: var(--premium-font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--evr-ink);
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(36, 61, 48, 0.9) 0%, var(--evr-bg-3) 42%, #050807 100%);
+  min-height: 100vh;
+}
+
+/* ── Buttons ─────────────────────────────────────── */
+.evr-btn,
+body.theme-eventra .primary,
+body.theme-eventra button.primary,
+body.theme-eventra .card-link,
+body.theme-eventra .eh-btn--gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--evr-space-2);
+  min-height: 44px;
+  padding: 0 var(--evr-space-5);
+  border-radius: var(--premium-radius-sm);
+  border: 1px solid transparent;
+  font-family: var(--premium-font-body);
+  font-size: var(--evr-text-sm);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform var(--evr-duration) var(--evr-ease),
+    box-shadow var(--evr-duration) var(--evr-ease),
+    border-color var(--evr-duration) var(--evr-ease),
+    background var(--evr-duration) var(--evr-ease),
+    filter var(--evr-duration) ease;
+}
+
+.evr-btn--primary,
+body.theme-eventra .primary,
+body.theme-eventra button.primary,
+body.theme-eventra .card-link,
+body.theme-eventra .eh-btn--gold {
+  color: #1a1408;
+  background: linear-gradient(180deg, var(--evr-accent), var(--evr-accent-deep));
+  box-shadow: 0 10px 28px rgba(200, 169, 110, 0.32);
+}
+
+.evr-btn--primary:hover:not(:disabled),
+body.theme-eventra .primary:hover:not(:disabled),
+body.theme-eventra .card-link:hover,
+body.theme-eventra .eh-btn--gold:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+  box-shadow: 0 14px 36px rgba(200, 169, 110, 0.4);
+}
+
+.evr-btn--ghost,
+body.theme-eventra .eh-btn--ghost,
+body.theme-eventra .secondary {
+  color: var(--evr-ink-soft);
+  background: var(--evr-glass);
+  border-color: var(--evr-line);
+}
+
+.evr-btn--ghost:hover:not(:disabled),
+body.theme-eventra .eh-btn--ghost:hover:not(:disabled) {
+  border-color: var(--evr-accent);
+  color: var(--evr-ink);
+  background: var(--evr-accent-soft);
+}
+
+.evr-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Glass panels & cards ─────────────────────────── */
+.evr-glass,
+body.theme-eventra .card,
+body.theme-eventra .tourism-mini-card,
+body.theme-eventra .city-pulse-card,
+body.theme-eventra .ai-pulse-card {
+  border: 1px solid var(--evr-line);
+  background: var(--evr-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+body.theme-eventra .card {
+  border-radius: var(--premium-radius-md);
+  box-shadow: var(--premium-card-elevation);
+  overflow: hidden;
+  transition:
+    transform var(--evr-duration-slow) var(--evr-ease),
+    box-shadow var(--evr-duration-slow) var(--evr-ease),
+    border-color var(--evr-duration) var(--evr-ease);
+}
+
+body.theme-eventra .card:hover {
+  transform: translateY(-6px);
+  border-color: var(--evr-line-strong);
+  box-shadow: var(--premium-card-elevation-hover);
+  background: var(--evr-surface-2);
+}
+
+body.theme-eventra .card-title {
+  font-family: var(--premium-font-display);
+  color: var(--evr-ink);
+}
+
+body.theme-eventra .card-meta,
+body.theme-eventra .card-summary {
+  color: var(--evr-muted);
+}
+
+/* ── Form controls ───────────────────────────────── */
+.evr-input,
+body.theme-eventra input,
+body.theme-eventra select,
+body.theme-eventra textarea {
+  font-family: var(--premium-font-body);
+  font-size: var(--evr-text-base);
+  color: var(--evr-ink);
+  background: rgba(8, 14, 18, 0.55);
+  border: 1px solid var(--evr-line);
+  border-radius: var(--premium-radius-sm);
+  transition:
+    border-color var(--evr-duration) var(--evr-ease),
+    box-shadow var(--evr-duration) var(--evr-ease);
+}
+
+body.theme-eventra input::placeholder,
+body.theme-eventra textarea::placeholder {
+  color: var(--evr-soft);
+}
+
+body.theme-eventra input:focus,
+body.theme-eventra select:focus,
+body.theme-eventra textarea:focus,
+body.theme-eventra input:focus-visible,
+body.theme-eventra select:focus-visible {
+  outline: none;
+  border-color: rgba(200, 169, 110, 0.55);
+  box-shadow: 0 0 0 3px var(--evr-accent-soft);
+}
+
+/* ── Chips ───────────────────────────────────────── */
+.evr-chip,
+body.theme-eventra .prompt-chips button,
+body.theme-eventra .cat-chip {
+  border-radius: var(--premium-radius-sm);
+  border: 1px solid var(--evr-line);
+  background: var(--evr-glass);
+  color: var(--evr-muted);
+  font-family: var(--premium-font-body);
+  font-size: var(--evr-text-sm);
+  transition:
+    border-color var(--evr-duration) var(--evr-ease),
+    background var(--evr-duration) var(--evr-ease),
+    color var(--evr-duration) var(--evr-ease);
+}
+
+body.theme-eventra .prompt-chips button:hover,
+body.theme-eventra .cat-chip:hover {
+  border-color: var(--evr-accent);
+  color: var(--evr-ink);
+  background: var(--evr-accent-soft);
+}
+
+body.theme-eventra .cat-chip--active {
+  border-color: var(--evr-accent);
+  background: var(--evr-accent-soft);
+  color: var(--evr-ink);
+}
+
+/* ── Modals (event hub, itinerary) ───────────────── */
+.evr-modal-backdrop,
+body.theme-eventra .event-hub-modal .eh-modal-backdrop,
+body.theme-eventra .itin-modal-backdrop {
+  background: rgba(5, 11, 18, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.evr-modal-panel,
+body.theme-eventra .event-hub-modal .eh-modal-panel,
+body.theme-eventra .itin-modal-panel {
+  background: linear-gradient(165deg, rgba(15, 23, 36, 0.98), rgba(7, 27, 31, 0.98));
+  border: 1px solid var(--evr-line-strong);
+  border-radius: var(--premium-radius-lg);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.55);
+  color: var(--evr-ink);
+}
+
+/* ── Loading & empty ─────────────────────────────── */
+@keyframes evr-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.evr-skeleton,
+body.theme-eventra .grid-skeleton-card,
+body.theme-eventra .grid-skeleton-card .sk-img,
+body.theme-eventra .grid-skeleton-card .sk-line {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  background-size: 200% 100%;
+  animation: evr-shimmer 1.4s ease-in-out infinite;
+  border-radius: var(--premium-radius-sm);
+}
+
+body.theme-eventra .loading,
+body.theme-eventra .empty,
+.evr-empty {
+  font-family: var(--premium-font-display);
+  color: var(--evr-muted);
+  background: transparent;
+  border: 1px dashed var(--evr-line);
+  border-radius: var(--premium-radius-md);
+  padding: var(--evr-space-7) var(--evr-space-5);
+}
+
+body.theme-eventra .eh-loading,
+body.theme-eventra .eh-muted {
+  color: var(--evr-muted);
+  font-size: var(--evr-text-sm);
+}
+
+/* ── External provider CTAs ─────────────────────── */
+body.theme-eventra .card-link,
+body.theme-eventra .eh-footnote a,
+body.theme-eventra a[target="_blank"].card-link {
+  /* primary button styles applied above */
+}
+
+body.theme-eventra .eh-footnote {
+  font-size: var(--evr-text-xs);
+  color: var(--evr-soft);
+  letter-spacing: 0.04em;
+}
+
+/* ── Focus visible ───────────────────────────────── */
+body.theme-eventra :focus-visible,
+body.evr-app :focus-visible {
+  outline: 2px solid var(--evr-accent);
+  outline-offset: 2px;
+}
+
+/* ── Mobile base ───────────────────────────────────── */
+@media (max-width: 900px) {
+  body.theme-eventra .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--evr-space-4);
+  }
+
+  body.theme-eventra .tourism-picks-grid,
+  body.theme-eventra .city-pulse-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  body.theme-eventra .grid,
+  body.theme-eventra .tourism-picks-grid,
+  body.theme-eventra .city-pulse-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body.theme-eventra input {
+    width: 100%;
+    min-width: 0;
+  }
+
+  body.theme-eventra .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.theme-eventra .card,
+  body.theme-eventra .card-link,
+  .evr-skeleton,
+  body.theme-eventra .grid-skeleton-card .sk-img,
+  body.theme-eventra .grid-skeleton-card .sk-line {
+    animation: none;
+    transition: none;
+  }
+
+  body.theme-eventra .card:hover,
+  .evr-btn--primary:hover:not(:disabled) {
+    transform: none;
+  }
+}

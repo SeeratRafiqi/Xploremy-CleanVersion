@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reset password · Event Explorer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #131313;
+      --surface: rgba(30, 30, 30, 0.65);
+      --text: #e5e2e1;
+      --muted: #bdc9c8;
+      --warm: #879392;
+      --primary: #76d6d5;
+      --gold: #e9c349;
+      --border: rgba(255, 255, 255, 0.1);
+      --gutter: clamp(14px, 3.5vw, 52px);
+      --font-display: "Montserrat", system-ui, sans-serif;
+      --font-body: "Inter", system-ui, sans-serif;
+    }
+    html { font-size: 14px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+    .auth-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 60% 45% at 50% 0%, rgba(0, 128, 128, 0.14), transparent 60%),
+        radial-gradient(ellipse 40% 30% at 80% 90%, rgba(233, 195, 73, 0.06), transparent 50%);
+    }
+    .auth-header {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      padding: 0 var(--gutter);
+      border-bottom: 1px solid var(--border);
+      background: rgba(19, 19, 19, 0.88);
+      backdrop-filter: blur(18px);
+    }
+    .auth-header a.brand {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .auth-header-link {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .auth-header-link:hover {
+      color: var(--primary);
+      border-color: rgba(118, 214, 213, 0.35);
+      background: rgba(118, 214, 213, 0.08);
+    }
+    .auth-page {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px var(--gutter) 40px;
+    }
+    .auth-shell {
+      width: 100%;
+      max-width: 400px;
+      background: var(--surface);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 0 24px rgba(118, 214, 213, 0.08);
+      overflow: hidden;
+    }
+    .auth-title {
+      padding: 20px 22px 0;
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .auth-panels { padding: 14px 22px 26px; }
+    .auth-intro {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 18px;
+    }
+    label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--warm);
+      margin: 12px 0 6px;
+    }
+    label:first-of-type { margin-top: 0; }
+    input[type="password"],
+    input[type="text"] {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #201f1f;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input:focus {
+      border-color: rgba(118, 214, 213, 0.4);
+      box-shadow: 0 0 0 2px rgba(118, 214, 213, 0.12);
+    }
+    input::placeholder { color: var(--warm); }
+    .auth-submit {
+      width: 100%;
+      margin-top: 18px;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      font-family: var(--font-display);
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      background: var(--primary);
+      color: #003737;
+      cursor: pointer;
+      transition: filter 0.2s, transform 0.15s;
+    }
+    .auth-submit:hover { filter: brightness(1.06); }
+    .auth-submit:active { transform: scale(0.99); }
+    .auth-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+    .auth-msg {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      display: none;
+    }
+    .auth-msg.is-error {
+      display: block;
+      background: rgba(180, 60, 60, 0.15);
+      border: 1px solid rgba(220, 120, 120, 0.35);
+      color: #ffdad6;
+    }
+    .auth-msg.is-ok {
+      display: block;
+      background: rgba(118, 214, 213, 0.12);
+      border: 1px solid rgba(118, 214, 213, 0.3);
+      color: #e3fffe;
+    }
+    .back-home {
+      margin-top: 18px;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+    .back-home a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .back-home a:hover { text-decoration: underline; }
+
+    /* Password field with show/hide toggle */
+    .pw-field { position: relative; }
+    .pw-field input[type="password"],
+    .pw-field input[type="text"] { padding-right: 46px; }
+    .pw-toggle {
+      position: absolute;
+      top: 50%;
+      right: 6px;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      border: none;
+      background: transparent;
+      color: var(--warm);
+      cursor: pointer;
+      border-radius: 999px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .pw-toggle:hover { color: var(--primary); background: rgba(118, 214, 213, 0.08); }
+    .pw-toggle:focus-visible { outline: 2px solid rgba(118, 214, 213, 0.5); outline-offset: 1px; }
+    .pw-toggle svg { width: 18px; height: 18px; display: block; }
+    .pw-toggle .icon-eye-off { display: none; }
+    .pw-toggle.is-visible .icon-eye { display: none; }
+    .pw-toggle.is-visible .icon-eye-off { display: block; }
+  </style>
+</head>
+<body>
+  <div class="auth-glow" aria-hidden="true"></div>
+  <header class="auth-header">
+    <a class="brand" href="/">Event Explorer</a>
+    <a class="auth-header-link" href="/events">Discover</a>
+  </header>
+
+  <div class="auth-page">
+    <div class="auth-shell">
+      <h1 class="auth-title">Choose a new password</h1>
+      <div class="auth-panels">
+        <p class="auth-intro">Enter a new password for your account. This link is valid for a limited time.</p>
+        <form id="form-reset">
+          <label for="rs-password">New password (min 8 characters)</label>
+          <div class="pw-field">
+            <input id="rs-password" type="password" required minlength="8" autocomplete="new-password" />
+            <button type="button" class="pw-toggle" data-target="rs-password" aria-label="Show password" aria-pressed="false">
+              <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+          <label for="rs-password2">Confirm new password</label>
+          <div class="pw-field">
+            <input id="rs-password2" type="password" required minlength="8" autocomplete="new-password" />
+            <button type="button" class="pw-toggle" data-target="rs-password2" aria-label="Show password" aria-pressed="false">
+              <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+          <button type="submit" class="auth-submit" id="rs-submit">Update password</button>
+        </form>
+        <div id="auth-msg" class="auth-msg" role="alert"></div>
+      </div>
+    </div>
+
+    <p class="back-home"><a href="/auth">← Back to Sign in</a></p>
+  </div>
+
+  <script>
+    (function () {
+      var msg = document.getElementById('auth-msg');
+      var form = document.getElementById('form-reset');
+      var submit = document.getElementById('rs-submit');
+
+      function showMsg(text, kind) {
+        msg.textContent = text || '';
+        msg.className = 'auth-msg' + (kind === 'ok' ? ' is-ok' : kind === 'err' ? ' is-error' : '');
+        if (!text) msg.className = 'auth-msg';
+      }
+
+      function getToken() {
+        var params = new URLSearchParams(location.search);
+        return (params.get('token') || '').trim();
+      }
+
+      // Show/hide password toggles (UI only)
+      Array.prototype.forEach.call(document.querySelectorAll('.pw-toggle'), function (btn) {
+        var input = document.getElementById(btn.getAttribute('data-target'));
+        if (!input) return;
+        btn.addEventListener('click', function () {
+          var reveal = input.type === 'password';
+          input.type = reveal ? 'text' : 'password';
+          btn.classList.toggle('is-visible', reveal);
+          btn.setAttribute('aria-pressed', reveal ? 'true' : 'false');
+          btn.setAttribute('aria-label', reveal ? 'Hide password' : 'Show password');
+        });
+      });
+
+      var token = getToken();
+      if (!token) {
+        showMsg('This reset link is missing its token. Request a new link from the Sign in page.', 'err');
+        if (submit) submit.disabled = true;
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        showMsg('');
+        var pw = document.getElementById('rs-password').value;
+        var pw2 = document.getElementById('rs-password2').value;
+        if (pw.length < 8) { showMsg('Password must be at least 8 characters.', 'err'); return; }
+        if (pw !== pw2) { showMsg('Passwords do not match.', 'err'); return; }
+
+        if (submit) submit.disabled = true;
+        fetch('/api/auth/reset-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'same-origin',
+          body: JSON.stringify({ token: token, password: pw }),
+        })
+          .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+          .then(function (x) {
+            if (x.ok) {
+              showMsg((x.j && x.j.message) || 'Password updated. Redirecting to sign in…', 'ok');
+              setTimeout(function () { location.href = '/auth'; }, 1600);
+            } else {
+              if (submit) submit.disabled = false;
+              showMsg((x.j && x.j.error) || 'Could not reset password.', 'err');
+            }
+          })
+          .catch(function () {
+            if (submit) submit.disabled = false;
+            showMsg('Network error — try again.', 'err');
+          });
+      });
+    })();
+  </script>
+</body>
+</html>
